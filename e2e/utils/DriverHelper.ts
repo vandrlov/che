@@ -80,6 +80,8 @@ export class DriverHelper {
         const attempts: number = TestConstants.TS_SELENIUM_DEFAULT_ATTEMPTS;
         const polling: number = TestConstants.TS_SELENIUM_DEFAULT_POLLING;
 
+        console.log(`          ---->  DriverHelper.waitVisibility ${elementLocator}`);
+
         for (let i = 0; i < attempts; i++) {
             const webElement: WebElement = await this.driver.wait(until.elementLocated(elementLocator), timeout);
 
@@ -350,6 +352,8 @@ export class DriverHelper {
     }
 
     public async waitAndSwitchToFrame(iframeLocator: By, timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
+        console.log(`          ---->  DriverHelper.waitAndSwitchToFrame ${iframeLocator}`);
+
         await this.driver.wait(until.ableToSwitchToFrame(iframeLocator), timeout);
     }
 
@@ -439,7 +443,7 @@ export class DriverHelper {
     async waitOpenningSecondWindow(timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
         await this.driver.wait(async () => {
             const handles: string[] = await this.driver.getAllWindowHandles();
-           if (handles.length > 1) {
+            if (handles.length > 1) {
                 return true;
             }
         }, timeout);

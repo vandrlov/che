@@ -35,6 +35,8 @@ export class Ide {
         @inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper) { }
 
     async waitAndSwitchToIdeFrame(timeout: number = TestConstants.TS_SELENIUM_LOAD_PAGE_TIMEOUT) {
+        console.log('      -->  Ide.waitAndSwitchToIdeFrame');
+
         await this.driverHelper.waitAndSwitchToFrame(By.css(Ide.IDE_IFRAME_CSS), timeout);
     }
 
@@ -100,12 +102,16 @@ export class Ide {
         workspaceName: string,
         timeout: number = TestConstants.TS_SELENIUM_LOAD_PAGE_TIMEOUT) {
 
+        console.log('      -->  Ide.waitWorkspaceAndIde');
+
         await this.waitAndSwitchToIdeFrame(timeout);
         await this.waitIde(timeout);
     }
 
     async waitIde(timeout: number = TestConstants.TS_SELENIUM_LOAD_PAGE_TIMEOUT) {
         const mainIdeParts: Array<By> = [By.css(Ide.TOP_MENU_PANEL_CSS), By.css(Ide.LEFT_CONTENT_PANEL_CSS), By.id(Ide.EXPLORER_BUTTON_ID)];
+
+        console.log('      -->  Ide.waitIde');
 
         for (const idePartLocator of mainIdeParts) {
             await this.driverHelper.waitVisibility(idePartLocator, timeout);
