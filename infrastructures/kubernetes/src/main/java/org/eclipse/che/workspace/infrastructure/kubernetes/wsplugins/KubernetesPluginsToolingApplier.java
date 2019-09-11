@@ -230,7 +230,7 @@ public class KubernetesPluginsToolingApplier implements ChePluginsApplier {
                         .build())
             .collect(toList());
 
-    container.setVolumeMounts(volumeMounts);
+    container.getVolumeMounts().addAll(volumeMounts);
 
     for (Volume volume : volumes) {
       pod.getSpec()
