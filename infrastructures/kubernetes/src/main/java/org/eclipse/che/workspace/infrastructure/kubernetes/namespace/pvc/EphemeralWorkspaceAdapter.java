@@ -55,7 +55,7 @@ public class EphemeralWorkspaceAdapter {
 
   public void provision(KubernetesEnvironment k8sEnv, RuntimeIdentity identity)
       throws InfrastructureException {
-    LOG.debug("Provisioning PVC strategy for workspace '{}'", identity.getWorkspaceId());
+    LOG.info("Provisioning PVC strategy for workspace '{}'", identity.getWorkspaceId());
     k8sEnv.getPersistentVolumeClaims().clear();
     for (PodData pod : k8sEnv.getPodsData().values()) {
       PodSpec podSpec = pod.getSpec();
@@ -70,6 +70,7 @@ public class EphemeralWorkspaceAdapter {
           .filter(v -> v.getPersistentVolumeClaim() != null)
           .forEach(
               v -> {
+                LOG.info("volume name", v.getName());
                 String claimName = v.getPersistentVolumeClaim().getClaimName();
                 cheVolumeNameToPodVolumeName.put(claimName, v.getName());
                 v.setPersistentVolumeClaim(null);
