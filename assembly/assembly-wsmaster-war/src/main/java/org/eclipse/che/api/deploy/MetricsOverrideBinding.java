@@ -15,7 +15,11 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
+import io.opentracing.Tracer;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -23,7 +27,11 @@ import org.eclipse.che.api.deploy.jsonrpc.CheMajorWebSocketEndpointConfiguration
 import org.eclipse.che.api.deploy.jsonrpc.CheMajorWebSocketEndpointExecutorServiceProvider;
 import org.eclipse.che.api.deploy.jsonrpc.CheMinorWebSocketEndpointConfiguration;
 import org.eclipse.che.api.deploy.jsonrpc.CheMinorWebSocketEndpointExecutorServiceProvider;
+import org.eclipse.che.api.workspace.server.WorkspaceSharedPool;
+import org.eclipse.che.commons.annotation.Nullable;
+import org.eclipse.che.commons.lang.concurrent.ThreadLocalPropagateContext;
 import org.eclipse.che.core.metrics.ExecutorServiceMetrics;
+import org.eclipse.che.workspace.infrastructure.kubernetes.util.KubernetesSharedPool;
 
 /**
  * {@link Module} that provides metered implementation for different classes. Metrics will be
@@ -39,6 +47,74 @@ public class MetricsOverrideBinding implements Module {
     binder
         .bind(CheMinorWebSocketEndpointExecutorServiceProvider.class)
         .to(MeteredCheMinorWebSocketEndpointExecutorServiceProvider.class);
+    System.out.println("11111");
+    binder.bind(KubernetesSharedPool.class).to(MeteredKubernetesSharedPool.class);
+    binder.bind(WorkspaceSharedPool.class).to(MeteredWorkspaceSharedPool.class);
+    System.out.println("2222");
+  }
+
+  public static class MeteredWorkspaceSharedPool extends WorkspaceSharedPool {
+    private final PrometheusMeterRegistry meterRegistry;
+
+    private ExecutorService executorService;
+
+    @Inject
+    public MeteredWorkspaceSharedPool(
+        @Named("che.workspace.pool.type") String poolType,
+        @Named("che.workspace.pool.exact_size") @Nullable String exactSizeProp,
+        @Named("che.workspace.pool.cores_multiplier") @Nullable String coresMultiplierProp,
+        Tracer tracer,
+        PrometheusMeterRegistry meterRegistry) {
+      super(poolType, exactSizeProp, coresMultiplierProp, tracer);
+      this.meterRegistry = meterRegistry;
+    }
+
+    @Override
+    public ExecutorService getExecutor() {
+      if (executorService == null) {
+        executorService =
+            ExecutorServiceMetrics.monitor(
+                meterRegistry, super.getExecutor(), "WorkspaceSharedPool", Tags.empty());
+      }
+      return executorService;
+    }
+
+    @Override
+    public void execute(Runnable runnable) {
+      super.execute(runnable);
+    }
+
+    @Override
+    public <T> Future<T> submit(Callable<T> callable) {
+      return getExecutor().submit(callable);
+    }
+
+    @Override
+    public CompletableFuture<Void> runAsync(Runnable runnable) {
+      return CompletableFuture.runAsync(ThreadLocalPropagateContext.wrap(runnable), getExecutor());
+    }
+  }
+
+  public static class MeteredKubernetesSharedPool extends KubernetesSharedPool {
+    private final PrometheusMeterRegistry meterRegistry;
+
+    private ExecutorService executorService;
+
+    @Inject
+    public MeteredKubernetesSharedPool(PrometheusMeterRegistry meterRegistry) {
+      super();
+      this.meterRegistry = meterRegistry;
+    }
+
+    @Override
+    public ExecutorService getExecutor() {
+      if (executorService == null) {
+        executorService =
+            ExecutorServiceMetrics.monitor(
+                meterRegistry, super.getExecutor(), "KubernetesMachineSharedPool", Tags.empty());
+      }
+      return executorService;
+    }
   }
 
   @Singleton

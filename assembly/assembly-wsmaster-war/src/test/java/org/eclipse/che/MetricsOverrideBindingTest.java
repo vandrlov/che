@@ -20,22 +20,42 @@ import io.micrometer.core.instrument.internal.TimedExecutorService;
 import java.util.concurrent.ExecutorService;
 import org.eclipse.che.api.deploy.jsonrpc.CheJsonRpcWebSocketConfigurationModule;
 import org.eclipse.che.api.deploy.jsonrpc.CheMajorWebSocketEndpointConfiguration;
+import org.eclipse.che.api.workspace.server.WorkspaceSharedPool;
 import org.eclipse.che.core.metrics.MetricsModule;
+import org.eclipse.che.core.tracing.NopTracingModule;
+import org.eclipse.che.workspace.infrastructure.kubernetes.util.KubernetesSharedPool;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class MetricsOverrideBindingTest {
 
-  @Test
-  public void shouldInjectMettered() {
-    Injector injector =
+  Injector injector;
+
+  @BeforeTest
+  public void setup() {
+    injector =
         Guice.createInjector(
             new CheJsonRpcWebSocketConfigurationModule(),
             new org.eclipse.che.api.deploy.MetricsOverrideBinding(),
             new MetricsModule(),
+            new NopTracingModule(),
             new Module() {
               @Override
               public void configure(Binder binder) {
+                binder
+                    .bindConstant()
+                    .annotatedWith(Names.named("che.workspace.pool.type"))
+                    .to("fixed");
+                binder
+                    .bindConstant()
+                    .annotatedWith(Names.named("che.workspace.pool.exact_size"))
+                    .to("NULL");
+                binder
+                    .bindConstant()
+                    .annotatedWith(Names.named("che.workspace.pool.cores_multiplier"))
+                    .to("NULL");
+
                 binder
                     .bindConstant()
                     .annotatedWith(Names.named("che.core.jsonrpc.processor_max_pool_size"))
@@ -64,9 +84,27 @@ public class MetricsOverrideBindingTest {
                 binder.bindConstant().annotatedWith(Names.named("che.metrics.port")).to(100);
               }
             });
+  }
+
+  @Test
+  public void shouldInjectMetteredCheMajorWebSocketEndpointConfiguration() {
     CheMajorWebSocketEndpointConfiguration configuration =
         injector.getInstance(CheMajorWebSocketEndpointConfiguration.class);
     ExecutorService exc = configuration.getExecutorService();
+    Assert.assertTrue(exc instanceof TimedExecutorService);
+  }
+
+  @Test
+  public void shouldInjectMetteredWorkspaceSharedPool() {
+    WorkspaceSharedPool pool = injector.getInstance(WorkspaceSharedPool.class);
+    ExecutorService exc = pool.getExecutor();
+    Assert.assertTrue(exc instanceof TimedExecutorService);
+  }
+
+  @Test
+  public void shouldInjectMetteredKubernetesSharedPool() {
+    KubernetesSharedPool pool = injector.getInstance(KubernetesSharedPool.class);
+    ExecutorService exc = pool.getExecutor();
     Assert.assertTrue(exc instanceof TimedExecutorService);
   }
 }
