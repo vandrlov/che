@@ -37,7 +37,8 @@ const CLASSES = {
     ScreenCatcher: 'ScreenCatcher',
     OcpLoginPage: 'OcpLoginPage',
     OcpWebConsolePage: 'OcpWebConsolePage',
-    OpenWorkspaceWidget: 'OpenWorkspaceWidget'
+    OpenWorkspaceWidget: 'OpenWorkspaceWidget',
+    GitHubPrlugin: 'GitHubPrCheckPlugin'
 };
 
 export { TYPES, CLASSES };

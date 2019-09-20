@@ -6,7 +6,7 @@ projects:
   - name: petclinic
     source:
       type: git
-      location: 'https://github.com/spring-projects/spring-petclinic.git'
+      location: 'https://github.com/crw-qe/spring-petclinic'
 components:
   - type: kubernetes
     alias: petclinic-web
@@ -36,6 +36,8 @@ components:
     id: redhat/java/latest
   - type: chePlugin
     id: redhat/vscode-yaml/latest
+  - id: ms-vscode/vscode-github-pullrequest/latest
+    type: chePlugin
 commands:
   - name: build
     actions:
