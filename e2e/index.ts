@@ -30,6 +30,7 @@ export * from './pageobjects/ide/OpenWorkspaceWidget';
 export * from './pageobjects/ide/ProjectTree';
 export * from './pageobjects/ide/QuickOpenContainer';
 export * from './pageobjects/ide/RightToolbar';
+export * from './pageobjects/ide/ContextMenu';
 export * from './pageobjects/ide/Ide';
 export * from './pageobjects/ide/GitHubPrlugin';
 export * from './pageobjects/ide/DebugView';

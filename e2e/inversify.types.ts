@@ -38,7 +38,8 @@ const CLASSES = {
     OcpLoginPage: 'OcpLoginPage',
     OcpWebConsolePage: 'OcpWebConsolePage',
     OpenWorkspaceWidget: 'OpenWorkspaceWidget',
-    GitHubPrlugin: 'GitHubPrCheckPlugin'
+    GitHubPrlugin: 'GitHubPrCheckPlugin',
+    ContextMenu: 'ContextMenu'
 };
 
 export { TYPES, CLASSES };
