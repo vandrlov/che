@@ -26,15 +26,15 @@ import { Terminal } from '../../pageobjects/ide/Terminal';
 import { OpenWorkspaceWidget } from '../../pageobjects/ide/OpenWorkspaceWidget';
 import { ICheLoginPage } from '../../pageobjects/login/ICheLoginPage';
 import * as fs from 'fs';
-import { ContextMenu } from '../../pageobjects/ide/ContextMenu';
+import { GitHubPrlugin } from '../../pageobjects/ide/GitHubPrlugin';
 
 const driverHelper: DriverHelper = e2eContainer.get(CLASSES.DriverHelper);
 const ide: Ide = e2eContainer.get(CLASSES.Ide);
 const projectTree: ProjectTree = e2eContainer.get(CLASSES.ProjectTree);
 const topMenu: TopMenu = e2eContainer.get(CLASSES.TopMenu);
+const githubPrPlugin: GitHubPrlugin = e2eContainer.get(CLASSES.GitHubPrlugin);
 const quickOpenContainer: QuickOpenContainer = e2eContainer.get(CLASSES.QuickOpenContainer);
 const editor: Editor = e2eContainer.get(CLASSES.Editor);
-const contextMenu: ContextMenu = e2eContainer.get(CLASSES.ContextMenu);
 const previewWidget: PreviewWidget = e2eContainer.get(CLASSES.PreviewWidget);
 const rightToolbar: RightToolbar = e2eContainer.get(CLASSES.RightToolbar);
 const terminal: Terminal = e2eContainer.get(CLASSES.Terminal);
@@ -77,6 +77,17 @@ suite('Validation of workspace start', async () => {
         await projectTree.waitProjectImported(projectName, 'src');
     });
 
+    test('Validate GitHubPRPlugin', async () => {
+        await isureClickOnMenu('View', 'Find Command...');
+        await driverHelper.getDriver().sleep(3000);
+        await quickOpenContainer.type('GitHub');
+
+        await quickOpenContainer.clickOnContainerItem('GitHub Pull Requests: Manually Provide Authentication Response');
+        await quickOpenContainer.type(TestConstants.GITHUB_AUTH_TOKEN);
+        await githubPrPlugin.waitAndClickOnOctocatIcon();
+
+    });
+
     test('Wait until project is imported', async () => {
         const rootWsName: string = 'projects';
         const mainWindowHandle: string = await driverHelper.getDriver().getWindowHandle();
@@ -88,7 +99,6 @@ suite('Validation of workspace start', async () => {
     });
 
 });
-
 suite('Language server validation', async () => {
     test('Java LS initialization', async () => {
         await projectTree.expandPathAndOpenFileInAssociatedWorkspace(pathToJavaFolder, javaFileName);
@@ -119,17 +129,11 @@ suite('Language server validation', async () => {
         await editor.waitSuggestion(javaFileName, 'run(Class<?> primarySource, String... args) : ConfigurableApplicationContext');
     });
 
-
-    test('Codenavigation', async () => {
+    // it's skipped because of issue https://github.com/eclipse/che/issues/14520
+    test.skip('Codenavigation', async () => {
         await editor.moveCursorToLineAndChar(javaFileName, 32, 17);
-        try {
-            await editor.performKeyCombination(javaFileName, Key.chord(Key.CONTROL, Key.F12));
-            await editor.waitEditorAvailable(codeNavigationClassName);
-        } catch (err) {
-            if (err instanceof error.TimeoutError) {
-                checkCodeNavigationWithContextMenu();
-            }
-        }
+        await editor.performKeyCombination(javaFileName, Key.chord(Key.CONTROL, Key.F12));
+        await editor.waitEditorAvailable(codeNavigationClassName);
     });
 
     test.skip('Yaml LS initialization', async () => {
@@ -174,7 +178,7 @@ suite('Validation of workspace build and run', async () => {
 });
 
 suite('Display source code changes in the running application', async () => {
-        test('Change source code', async () => {
+    test('Change source code', async () => {
         await projectTree.expandPathAndOpenFileInAssociatedWorkspace(pathToChangedJavaFileFolder, changedJavaFileName);
         await editor.waitEditorAvailable(changedJavaFileName);
         await editor.clickOnTab(changedJavaFileName);
@@ -234,7 +238,7 @@ suite('Validation of debug functionality', async () => {
     });
 
     test('Open debug configuration file', async () => {
-        await isureClickOnDebugMenu();
+        await isureClickOnMenu('Debug', 'Open Configurations');
         await editor.waitEditorAvailable('launch.json');
         await editor.selectTab('launch.json');
     });
@@ -299,17 +303,11 @@ async function runTask(task: string) {
     await quickOpenContainer.clickOnContainerItem('Continue without scanning the task output');
 }
 
-async function checkCodeNavigationWithContextMenu() {
-    await contextMenu.invokeContextMenuOnActiveElementWithKeys();
-    await contextMenu.waitContextMenuAndClickOnItem('Go to Definition');
-    console.log('Known isuue https://github.com/eclipse/che/issues/14520.');
-}
-
 // sometimes under high loading the first click can be failed
-async function isureClickOnDebugMenu() {
-    try { await topMenu.selectOption('Debug', 'Open Configurations'); } catch (e) {
+async function isureClickOnMenu(mainMenu: string, subMenu: string) {
+    try { await topMenu.selectOption(mainMenu, subMenu); } catch (e) {
         console.log(`After clicking to the Debug top menu the menu has been not opened, try to click again...`);
-        await topMenu.selectOption('Debug', 'Open Configurations');
+        await topMenu.selectOption(mainMenu, subMenu);
     }
 }
 
@@ -327,8 +325,10 @@ async function checkJavaPathCompletion() {
 
         await projectTree.expandPathAndOpenFile(projectName, classPathFilename);
         await editor.waitEditorAvailable(classPathFilename);
+
         await editor.type(classPathFilename, Key.chord(Key.CONTROL, 'a'), 1);
         await editor.performKeyCombination(classPathFilename, Key.DELETE);
+
         await editor.type(classPathFilename, classpathText, 1);
         await editor.waitTabWithSavedStatus(classPathFilename);
     }

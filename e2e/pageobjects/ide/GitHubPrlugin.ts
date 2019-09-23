@@ -3,7 +3,10 @@ import { CLASSES } from '../../inversify.types';
 import { DriverHelper } from '../../utils/DriverHelper';
 import { TestConstants } from '../../TestConstants';
 import { By } from 'selenium-webdriver';
-import { Ide } from './Ide';
+
+
+
+
 
 /*********************************************************************
  * Copyright (c) 2019 Red Hat, Inc.
@@ -17,17 +20,21 @@ import { Ide } from './Ide';
 
 @injectable()
 export class GitHubPrlugin {
-    constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper,
-        @inject(CLASSES.Ide) private readonly ide: Ide) { }
-    private static readonly OCTOCAT_ICON_ID = 'shell-tab-plugin-view-container:github-pull-requests';
-    private static readonly PR_DOC_PANEL_ID = 'plugin-view-container:github-pull-requests';
+    public static readonly MAIN_ITEMS_LIST_LOCATOR = {All: '//div[contains(@id, \':All\')]', CreatedByMe: '//div[contains(@id, \':Created By Me\')]', AssignedToMe: '//div[contains(@id, \':Assigned To Me\')]', WaitingForMyReview: '//div[contains(@id, \':Waiting For My Review\')]', LocalPullRequestBranches: '//div[contains(@id, \':Local Pull Request Branches\')]'};
+    private static readonly OCTOCAT_ICON_ID: string = 'shell-tab-plugin-view-container:github-pull-requests';
+    private static readonly PR_DOC_PANEL_ID: string = 'plugin-view-container:github-pull-requests';
 
-    waitAndClickOnOctocatIcon(timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
-        this.driverHelper.waitAndClick(By.id(GitHubPrlugin.OCTOCAT_ICON_ID), timeout);
+    constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper) { }
+
+
+    async waitAndClickOnOctocatIcon(timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
+        await this.driverHelper.waitAndClick(By.id(GitHubPrlugin.OCTOCAT_ICON_ID), timeout);
     }
 
-    waitPullRequestDocPanelIsOpened(timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
-        this.driverHelper.waitVisibility(By.id(GitHubPrlugin.PR_DOC_PANEL_ID), timeout);
+    async waitPullRequestDocPanelIsOpened(timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
+        await this.driverHelper.waitVisibility(By.id(GitHubPrlugin.PR_DOC_PANEL_ID), timeout);
+
     }
+
 
 }

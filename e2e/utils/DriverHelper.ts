@@ -346,6 +346,7 @@ export class DriverHelper {
         await this.clear(elementLocator, timeout);
         await this.waitAttributeValue(elementLocator, 'value', '', timeout);
         await this.type(elementLocator, text, timeout);
+        await this.getDriver().sleep(3000);
         await this.waitAttributeValue(elementLocator, 'value', text, timeout);
     }
 

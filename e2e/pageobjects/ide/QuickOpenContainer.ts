@@ -31,13 +31,15 @@ export class QuickOpenContainer {
     public async clickOnContainerItem(itemText: string, timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
         const quickContainerItemLocator: By = By.xpath(`//div[@class='quick-open-entry']//span[text()='${itemText}']`);
 
+        await console.log(`//div[@class='quick-open-entry']//span[text()='${itemText}']`);
+
         await this.waitContainer(timeout);
         await this.driverHelper.waitAndClick(quickContainerItemLocator, timeout);
         await this.waitContainerDisappearance();
     }
 
     public async type(text: string) {
-        await this.driverHelper.enterValue(By.css('.quick-open-input input'), text);
+        await this.driverHelper.enterValue(By.css('div.monaco-inputbox  input.input'), text);
     }
 
 }

@@ -40,6 +40,7 @@ import { OcpWebConsolePage } from '../pageobjects/openshift/OcpWebConsolePage';
 import { OcpLoginByTempAdmin } from '../pageobjects/login/OcpLoginByTempAdmin';
 import { OpenWorkspaceWidget } from '../pageobjects/ide/OpenWorkspaceWidget';
 import { ContextMenu } from '../pageobjects/ide/ContextMenu';
+import { GitHubPrlugin } from '../pageobjects/ide/GitHubPrlugin';
 import { ITestWorkspaceUtil } from '..';
 
 export function getContainer(): Container {
