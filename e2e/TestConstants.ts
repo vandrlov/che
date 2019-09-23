@@ -162,6 +162,6 @@ export const TestConstants = {
     /**
      * GitHub auth token (for checking GitHub PR plugin)
      */
-    GITHUB_AUTH_TOKEN: process.env.GITHUB_AUTH_TOKEN || '5454564654654464646'
+    GITHUB_AUTH_TOKEN: process.env.GITHUB_AUTH_TOKEN || ''
 
 };

@@ -79,13 +79,12 @@ suite('Validation of workspace start', async () => {
 
     test('Validate GitHubPRPlugin', async () => {
         await isureClickOnMenu('View', 'Find Command...');
-        await driverHelper.getDriver().sleep(3000);
-        await quickOpenContainer.type('GitHub');
+        await quickOpenContainer.typeAndSelectSuggestion('GitHub', 'GitHub Pull Requests: Manually Provide Authentication Response');
+        await quickOpenContainer.typeAndSelectSuggestion(TestConstants.GITHUB_AUTH_TOKEN, 'Token (Press \'Enter\' to confirm your input or \'Escape\' to cancel)' );
+        await quickOpenContainer.typeAndSelectSuggestion('github.com', 'Token (Press \'Enter\' to confirm your input or \'Escape\' to cancel)' );
 
-        await quickOpenContainer.clickOnContainerItem('GitHub Pull Requests: Manually Provide Authentication Response');
-        await quickOpenContainer.type(TestConstants.GITHUB_AUTH_TOKEN);
         await githubPrPlugin.waitAndClickOnOctocatIcon();
-
+        await driverHelper.getDriver().sleep(30000);
     });
 
     test('Wait until project is imported', async () => {
