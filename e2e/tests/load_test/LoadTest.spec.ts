@@ -40,7 +40,9 @@ suite('Load test suite', async () => {
         await projectTree.openProjectTreeContainer();
         endTime = new Date().getTime();
         let deltaTime = (endTime - startTime) / 100;
-        await fs.createWriteStream('/tmp/workspace-creation-time.txt').write(deltaTime.toString()+'\n');
+        let currentUrl: string =  await driverHelper.getDriver().getCurrentUrl();
+        let currentWsName: string = currentUrl.substring(currentUrl.search('workshop.*'), currentUrl.length);
+        await fs.createWriteStream('/tmp/workspace-creation-time-of-' + currentWsName ).write(deltaTime.toString() + '\n');
     });
 
 });
