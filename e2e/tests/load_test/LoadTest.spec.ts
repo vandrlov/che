@@ -29,9 +29,8 @@ let endTime: number = 0;
 
 suite('Load test suite', async () => {
     test('Login and navigate to factory url', async () => {
-        await driverHelper.navigateToUrl(TestConstants.TS_SELENIUM_BASE_URL);
-        await cheLoginPage.login();
         await driverHelper.navigateToUrl(factoryUrl);
+        await cheLoginPage.login();
         startTime = new Date().getTime();
     });
 
