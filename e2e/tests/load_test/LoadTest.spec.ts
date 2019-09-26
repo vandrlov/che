@@ -22,8 +22,7 @@ const ide: Ide = e2eContainer.get(CLASSES.Ide);
 const projectTree: ProjectTree = e2eContainer.get(CLASSES.ProjectTree);
 const factoryUrl: string = `${TestConstants.TS_SELENIUM_BASE_URL}/f?url=https://raw.githubusercontent.com/redhat-developer-demos/guru-night/master/quarkus-tutorial/devfile.yaml`;
 const cheLoginPage: ICheLoginPage = e2eContainer.get<ICheLoginPage>(TYPES.CheLogin);
-let startTime: number = 0;
-let endTime: number = 0;
+
 
 
 
@@ -37,10 +36,6 @@ suite('Load test suite', async () => {
     test('Wait loading workspace and get time', async () => {
         await ide.waitAndSwitchToIdeFrame();
         await projectTree.openProjectTreeContainer();
-        let deltaTime = (endTime - startTime) / 100;
-        let currentUrl: string =  await driverHelper.getDriver().getCurrentUrl();
-        let currentWsName: string = currentUrl.substring(currentUrl.search('workshop.*'), currentUrl.length);
-        await fs.createWriteStream('/tmp/workspace-creation-time-of-' + currentWsName ).write(deltaTime.toString() + '\n');
     });
 
 });
