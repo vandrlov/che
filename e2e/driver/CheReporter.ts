@@ -81,6 +81,16 @@ class CheReporter extends mocha.reporters.Spec {
       }
     });
 
+    runner.on('pass', async (test: mocha.Test) => {
+      const loadTestReportFolder: string = './load-test-folder';
+      const loadTestFilePath: string = loadTestReportFolder + '/load-test-results.txt';
+      const report = test.title + ': ' + test.duration + '\r';
+      if (!fs.existsSync(loadTestReportFolder)) {
+        fs.mkdirSync(loadTestReportFolder);
+      }
+      fs.appendFileSync(loadTestFilePath, report);
+    });
+
     runner.on('end', async function (test: mocha.Test) {
       // ensure that fired events done
       await driver.get().sleep(5000);

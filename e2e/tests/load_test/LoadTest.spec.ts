@@ -31,13 +31,12 @@ suite('Load test suite', async () => {
     test('Login and navigate to factory url', async () => {
         await driverHelper.navigateToUrl(factoryUrl);
         await cheLoginPage.login();
-        startTime = new Date().getTime();
+        
     });
 
     test('Wait loading workspace and get time', async () => {
         await ide.waitAndSwitchToIdeFrame();
         await projectTree.openProjectTreeContainer();
-        endTime = new Date().getTime();
         let deltaTime = (endTime - startTime) / 100;
         let currentUrl: string =  await driverHelper.getDriver().getCurrentUrl();
         let currentWsName: string = currentUrl.substring(currentUrl.search('workshop.*'), currentUrl.length);
