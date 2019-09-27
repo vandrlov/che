@@ -116,7 +116,7 @@ suite('Language server validation', async () => {
     test('Suggestion', async () => {
         await editor.moveCursorToLineAndChar(javaFileName, 32, 27);
         await editor.pressControlSpaceCombination(javaFileName);
-        await editor.waitSuggestion(javaFileName, 'run(Class<?> primarySource, String... args) : ConfigurableApplicationContext');
+        await editor.waitSuggestion(javaFileName, 'run(Class<?> primarySource, String... args) : ConfigurableApplicationContext', 60000);
     });
 
 
@@ -174,7 +174,7 @@ suite('Validation of workspace build and run', async () => {
 });
 
 suite('Display source code changes in the running application', async () => {
-        test('Change source code', async () => {
+    test('Change source code', async () => {
         await projectTree.expandPathAndOpenFileInAssociatedWorkspace(pathToChangedJavaFileFolder, changedJavaFileName);
         await editor.waitEditorAvailable(changedJavaFileName);
         await editor.clickOnTab(changedJavaFileName);
