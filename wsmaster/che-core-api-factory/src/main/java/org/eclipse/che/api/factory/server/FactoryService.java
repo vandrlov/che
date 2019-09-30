@@ -296,7 +296,7 @@ public class FactoryService extends Service {
       @ApiParam(value = "Workspace identifier") @PathParam("ws-id") String wsId,
       @ApiParam(value = "Project path") @QueryParam("path") String path)
       throws BadRequestException, NotFoundException, ServerException, ConflictException {
-    final WorkspaceImpl workspace = workspaceManager.getWorkspace(wsId);
+    final WorkspaceImpl workspace = workspaceManager. getWorkspace(wsId);
     if (workspace.getConfig() == null) {
       throw new ConflictException("Workspace created with Devfile can not be exported as Factory.");
     }

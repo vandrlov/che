@@ -43,6 +43,8 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jayway.restassured.response.Response;
+
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,8 +63,10 @@ import org.eclipse.che.api.core.model.workspace.runtime.ServerStatus;
 import org.eclipse.che.api.core.rest.ApiExceptionMapper;
 import org.eclipse.che.api.core.rest.shared.dto.ServiceError;
 import org.eclipse.che.api.workspace.server.devfile.DevfileManager;
+import org.eclipse.che.api.workspace.server.devfile.DevfileProvider;
 import org.eclipse.che.api.workspace.server.devfile.URLFetcher;
 import org.eclipse.che.api.workspace.server.devfile.exception.DevfileFormatException;
+import org.eclipse.che.api.workspace.server.dto.DtoServerImpls;
 import org.eclipse.che.api.workspace.server.model.impl.CommandImpl;
 import org.eclipse.che.api.workspace.server.model.impl.EnvironmentImpl;
 import org.eclipse.che.api.workspace.server.model.impl.MachineConfigImpl;
@@ -96,6 +100,7 @@ import org.everrest.core.Filter;
 import org.everrest.core.GenericContainerRequest;
 import org.everrest.core.RequestFilter;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
@@ -131,6 +136,11 @@ public class WorkspaceServiceTest {
   @Mock private WorkspaceLinksGenerator linksGenerator;
   @Mock private DevfileManager devfileManager;
   @Mock private URLFetcher urlFetcher;
+
+  @InjectMocks
+  private WorkspaceDtoImplProvider provider;
+  @InjectMocks
+  private DevfileProvider devfileProvider;
 
   private WorkspaceService service;
 
@@ -188,7 +198,7 @@ public class WorkspaceServiceTest {
     final DevfileDto devfileDto = createDevfileDto();
     final WorkspaceImpl workspace = createWorkspace(devfileDto);
 
-    when(devfileManager.parseJson(any())).thenReturn(new DevfileImpl());
+    when(devfileManager.parseJson(any(Reader.class))).thenReturn(new DtoServerImpls.DevfileDtoImpl());
 
     when(wsManager.createWorkspace(any(Devfile.class), anyString(), any(), any()))
         .thenReturn(workspace);
@@ -226,7 +236,7 @@ public class WorkspaceServiceTest {
     final DevfileDto devfileDto = createDevfileDto();
     final WorkspaceImpl workspace = createWorkspace(devfileDto);
 
-    when(devfileManager.parseYaml(any())).thenReturn(new DevfileImpl());
+    when(devfileManager.parseYaml(any(Reader.class))).thenReturn(new DevfileImpl());
 
     when(wsManager.createWorkspace(any(Devfile.class), anyString(), any(), any()))
         .thenReturn(workspace);
@@ -263,7 +273,7 @@ public class WorkspaceServiceTest {
     final DevfileDto devfileDto = createDevfileDto();
     final WorkspaceImpl workspace = createWorkspace(devfileDto);
 
-    when(devfileManager.parseJson(any())).thenThrow(new DevfileFormatException("boom"));
+    when(devfileManager.parseJson(any(Reader.class))).thenThrow(new DevfileFormatException("boom"));
 
     when(wsManager.createWorkspace(any(Devfile.class), anyString(), any(), any()))
         .thenReturn(workspace);

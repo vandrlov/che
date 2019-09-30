@@ -65,6 +65,7 @@ import org.eclipse.che.api.core.ServerException;
 import org.eclipse.che.api.core.ValidationException;
 import org.eclipse.che.api.core.model.workspace.Workspace;
 import org.eclipse.che.api.core.model.workspace.config.ServerConfig;
+import org.eclipse.che.api.core.model.workspace.devfile.Devfile;
 import org.eclipse.che.api.core.rest.Service;
 import org.eclipse.che.api.workspace.server.devfile.DevfileManager;
 import org.eclipse.che.api.workspace.server.devfile.FileContentProvider;
@@ -89,6 +90,7 @@ import org.eclipse.che.api.workspace.shared.dto.RuntimeDto;
 import org.eclipse.che.api.workspace.shared.dto.ServerDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceConfigDto;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
+import org.eclipse.che.api.workspace.shared.dto.devfile.DevfileDto;
 import org.eclipse.che.commons.annotation.Nullable;
 import org.eclipse.che.commons.env.EnvironmentContext;
 
@@ -222,7 +224,7 @@ public class WorkspaceService extends Service {
     @ApiResponse(code = 500, message = "Internal server error occurred")
   })
   public Response create(
-      @ApiParam(value = "The devfile of the workspace to create", required = true) String devfile,
+      @ApiParam(value = "The devfile of the workspace to create", required = true) DevfileDto devfile,
       @ApiParam(
               value =
                   "Workspace attribute defined in 'attrName:attrValue' format. "
@@ -243,16 +245,16 @@ public class WorkspaceService extends Service {
           ServerException {
     requiredNotNull(devfile, "Devfile");
 
-    DevfileImpl devfileModel;
-    try {
-      if (APPLICATION_JSON_TYPE.isCompatible(contentType)) {
-        devfileModel = devfileManager.parseJson(devfile);
-      } else {
-        devfileModel = devfileManager.parseYaml(devfile);
-      }
-    } catch (DevfileException e) {
-      throw new BadRequestException(e.getMessage());
-    }
+//    DevfileImpl devfileModel;
+//    try {
+//      if (APPLICATION_JSON_TYPE.isCompatible(contentType)) {
+//        devfileModel = devfileManager.parseJson(devfile);
+//      } else {
+//        devfileModel = devfileManager.parseYaml(devfile);
+//      }
+//    } catch (DevfileException e) {
+//      throw new BadRequestException(e.getMessage());
+//    }
 
     final Map<String, String> attributes = parseAttrs(attrsList);
 
@@ -264,7 +266,7 @@ public class WorkspaceService extends Service {
     try {
       workspace =
           workspaceManager.createWorkspace(
-              devfileModel,
+              devfile,
               namespace,
               attributes,
               // create a new cache for each request so that we don't have to care about lifetime

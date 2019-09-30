@@ -24,16 +24,20 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.annotations.Beta;
 import com.google.common.annotations.VisibleForTesting;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.eclipse.che.api.core.model.workspace.devfile.Devfile;
 import org.eclipse.che.api.workspace.server.devfile.exception.DevfileException;
 import org.eclipse.che.api.workspace.server.devfile.exception.DevfileFormatException;
 import org.eclipse.che.api.workspace.server.devfile.validator.DevfileIntegrityValidator;
 import org.eclipse.che.api.workspace.server.devfile.validator.DevfileSchemaValidator;
-import org.eclipse.che.api.workspace.server.model.impl.devfile.ComponentImpl;
-import org.eclipse.che.api.workspace.server.model.impl.devfile.DevfileImpl;
+import org.eclipse.che.api.workspace.server.dto.DtoServerImpls;
+
 
 /**
  * Facade for devfile related operations.
@@ -65,7 +69,7 @@ public class DevfileManager {
   }
 
   /**
-   * Creates {@link DevfileImpl} from given devfile content in YAML. Performs schema and integrity
+   * Creates {@link Devfile} from given devfile content in YAML. Performs schema and integrity
    * validation of input data.
    *
    * @param devfileContent raw content of devfile
@@ -73,12 +77,16 @@ public class DevfileManager {
    * @throws DevfileFormatException when any of schema or integrity validations fail
    * @throws DevfileFormatException when any yaml parsing error occurs
    */
-  public DevfileImpl parseYaml(String devfileContent) throws DevfileFormatException {
+  public Devfile parseYaml(String devfileContent) throws DevfileFormatException {
+    return parse(new StringReader(devfileContent), schemaValidator::validateYaml);
+  }
+
+  public Devfile parseYaml(Reader devfileContent) throws DevfileFormatException {
     return parse(devfileContent, schemaValidator::validateYaml);
   }
 
   /**
-   * Creates {@link DevfileImpl} from given devfile content in JSON. Performs schema and integrity
+   * Creates {@link Devfile} from given devfile content in JSON. Performs schema and integrity
    * validation of input data.
    *
    * @param devfileContent raw content of devfile
@@ -86,48 +94,52 @@ public class DevfileManager {
    * @throws DevfileFormatException when any of schema or integrity validations fail
    * @throws DevfileFormatException when any yaml parsing error occurs
    */
-  public DevfileImpl parseJson(String devfileContent) throws DevfileFormatException {
+  public Devfile parseJson(String devfileContent) throws DevfileFormatException {
+    return parse(new StringReader(devfileContent), schemaValidator::validateJson);
+  }
+
+  public Devfile parseJson(Reader devfileContent) throws DevfileFormatException {
     return parse(devfileContent, schemaValidator::validateJson);
   }
 
-  /**
-   * Resolve devfile component references into their reference content.
-   *
-   * @param devfile input devfile
-   * @param fileContentProvider provider to fetch reference content
-   */
-  public void resolveReference(DevfileImpl devfile, FileContentProvider fileContentProvider)
-      throws DevfileException {
-    List<ComponentImpl> toResolve =
-        devfile
-            .getComponents()
-            .stream()
-            .filter(
-                c ->
-                    c.getType().equals(KUBERNETES_COMPONENT_TYPE)
-                        || c.getType().equals(OPENSHIFT_COMPONENT_TYPE))
-            .filter(c -> !isNullOrEmpty(c.getReference()))
-            .collect(Collectors.toList());
-    for (ComponentImpl c : toResolve) {
-      try {
-        c.setReferenceContent(fileContentProvider.fetchContent(c.getReference()));
-      } catch (IOException e) {
-        throw new DevfileException(
-            format(
-                "Unable to resolve reference of component: %s",
-                firstNonNull(c.getAlias(), c.getReference())),
-            e);
-      }
-    }
-  }
+//  /**
+//   * Resolve devfile component references into their reference content.
+//   *
+//   * @param devfile input devfile
+//   * @param fileContentProvider provider to fetch reference content
+//   */
+//  public void resolveReference(Devfil devfile, FileContentProvider fileContentProvider)
+//      throws DevfileException {
+//    List<ComponentImpl> toResolve =
+//        devfile
+//            .getComponents()
+//            .stream()
+//            .filter(
+//                c ->
+//                    c.getType().equals(KUBERNETES_COMPONENT_TYPE)
+//                        || c.getType().equals(OPENSHIFT_COMPONENT_TYPE))
+//            .filter(c -> !isNullOrEmpty(c.getReference()))
+//            .collect(Collectors.toList());
+//    for (ComponentImpl c : toResolve) {
+//      try {
+//        c.setReferenceContent(fileContentProvider.fetchContent(c.getReference()));
+//      } catch (IOException e) {
+//        throw new DevfileException(
+//            format(
+//                "Unable to resolve reference of component: %s",
+//                firstNonNull(c.getAlias(), c.getReference())),
+//            e);
+//      }
+//    }
+//  }
 
-  private DevfileImpl parse(String content, ValidationFunction validationFunction)
+  private Devfile parse(Reader content, ValidationFunction validationFunction)
       throws DevfileFormatException {
     JsonNode parsed = validationFunction.validate(content);
 
-    DevfileImpl devfile;
+    Devfile devfile;
     try {
-      devfile = objectMapper.treeToValue(parsed, DevfileImpl.class);
+      devfile = objectMapper.treeToValue(parsed, DtoServerImpls.DevfileDtoImpl.class);
     } catch (JsonProcessingException e) {
       throw new DevfileFormatException(e.getMessage());
     }
@@ -138,6 +150,6 @@ public class DevfileManager {
 
   @FunctionalInterface
   private interface ValidationFunction {
-    JsonNode validate(String content) throws DevfileFormatException;
+    JsonNode validate(Reader content) throws DevfileFormatException;
   }
 }

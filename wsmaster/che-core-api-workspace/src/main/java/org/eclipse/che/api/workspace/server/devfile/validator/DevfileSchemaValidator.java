@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,15 +53,15 @@ public class DevfileSchemaValidator {
     }
   }
 
-  public JsonNode validateYaml(String yamlContent) throws DevfileFormatException {
+  public JsonNode validateYaml(Reader yamlContent) throws DevfileFormatException {
     return validate(yamlContent, yamlMapper);
   }
 
-  public JsonNode validateJson(String jsonContent) throws DevfileFormatException {
+  public JsonNode validateJson(Reader jsonContent) throws DevfileFormatException {
     return validate(jsonContent, jsonMapper);
   }
 
-  private JsonNode validate(String content, ObjectMapper mapper) throws DevfileFormatException {
+  private JsonNode validate(Reader content, ObjectMapper mapper) throws DevfileFormatException {
     JsonNode contentNode;
     try {
       contentNode = mapper.readTree(content);
@@ -71,7 +72,7 @@ public class DevfileSchemaValidator {
     }
   }
 
-  private void validate(JsonNode contentNode) throws DevfileFormatException {
+  public void validate(JsonNode contentNode) throws DevfileFormatException {
     try {
       List<Problem> validationErrors = new ArrayList<>();
       ProblemHandler handler = ProblemHandler.collectingTo(validationErrors);

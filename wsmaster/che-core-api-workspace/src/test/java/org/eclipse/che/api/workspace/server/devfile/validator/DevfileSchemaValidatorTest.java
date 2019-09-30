@@ -16,6 +16,8 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.fail;
 
 import java.io.IOException;
+import java.io.StringReader;
+
 import org.eclipse.che.api.workspace.server.devfile.exception.DevfileFormatException;
 import org.eclipse.che.api.workspace.server.devfile.schema.DevfileSchemaProvider;
 import org.testng.annotations.BeforeClass;
@@ -35,7 +37,7 @@ public class DevfileSchemaValidatorTest {
   @Test(dataProvider = "validDevfiles")
   public void shouldNotThrowExceptionOnValidationOfValidDevfile(String resourceFilePath)
       throws Exception {
-    schemaValidator.validateYaml(getResource(resourceFilePath));
+    schemaValidator.validateYaml(new StringReader(getResource(resourceFilePath)));
   }
 
   @DataProvider
@@ -74,7 +76,7 @@ public class DevfileSchemaValidatorTest {
   public void shouldThrowExceptionOnValidationOfNonValidDevfile(
       String resourceFilePath, String expectedMessage) throws Exception {
     try {
-      schemaValidator.validateYaml(getResource(resourceFilePath));
+      schemaValidator.validateYaml(new StringReader(getResource(resourceFilePath)));
     } catch (DevfileFormatException e) {
       assertEquals(
           e.getMessage(),
