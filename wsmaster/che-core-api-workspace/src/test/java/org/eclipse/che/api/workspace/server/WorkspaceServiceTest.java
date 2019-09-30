@@ -275,8 +275,8 @@ public class WorkspaceServiceTest {
 
     when(devfileManager.parseJson(any(Reader.class))).thenThrow(new DevfileFormatException("boom"));
 
-    when(wsManager.createWorkspace(any(Devfile.class), anyString(), any(), any()))
-        .thenReturn(workspace);
+//    when(wsManager.createWorkspace(any(Devfile.class), anyString(), any(), any()))
+//        .thenReturn(workspace);
 
     final Response response =
         given()
@@ -284,7 +284,9 @@ public class WorkspaceServiceTest {
             .basic(ADMIN_USER_NAME, ADMIN_USER_PASSWORD)
             .contentType("application/json")
             .body(devfileDto)
+
             .when()
+
             .post(
                 SECURE_PATH
                     + "/workspace/devfile"

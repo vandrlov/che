@@ -5,15 +5,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.eclipse.che.api.core.rest.CheJsonProvider;
+import org.eclipse.che.api.core.BadRequestException;
+import org.eclipse.che.api.core.model.workspace.devfile.Devfile;
 import org.eclipse.che.api.workspace.server.devfile.DevfileManager;
+import org.eclipse.che.api.workspace.server.devfile.FileContentProvider;
+import org.eclipse.che.api.workspace.server.devfile.URLFetcher;
+import org.eclipse.che.api.workspace.server.devfile.URLFileContentProvider;
 import org.eclipse.che.api.workspace.server.devfile.exception.DevfileFormatException;
+import org.eclipse.che.api.workspace.server.devfile.validator.DevfileIntegrityValidator;
 import org.eclipse.che.api.workspace.server.devfile.validator.DevfileSchemaValidator;
 import org.eclipse.che.api.workspace.server.dto.DtoServerImpls;
 import org.eclipse.che.api.workspace.server.model.impl.WorkspaceImpl;
 import org.eclipse.che.api.workspace.server.model.impl.devfile.DevfileImpl;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
 import org.eclipse.che.api.workspace.shared.dto.devfile.DevfileDto;
+import org.eclipse.che.dto.server.DtoFactory;
 import org.eclipse.che.dto.server.JsonSerializable;
 
 import javax.inject.Inject;
@@ -40,18 +46,23 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 @Provider
 @Produces({MediaType.APPLICATION_JSON})
 @Consumes({APPLICATION_JSON})
-public class WorkspaceDtoImplProvider extends CheJsonProvider<WorkspaceDto> {
-    protected DevfileSchemaValidator validator;
+public class WorkspaceDtoImplProvider implements MessageBodyReader<WorkspaceDto>, MessageBodyWriter<WorkspaceDto> {
+    private final URLFetcher urlFetcher;
+    private final DevfileSchemaValidator validator;
+    private final URLFileContentProvider devfileContentProvider;
+    private DevfileManager devfileManager;
+    private DevfileIntegrityValidator devfileIntegrityValidator;
     protected ObjectMapper mapper;
 
     @Inject
-    public WorkspaceDtoImplProvider(DevfileSchemaValidator validator) {
-        super(null);
+    public WorkspaceDtoImplProvider(URLFetcher urlFetcher, DevfileSchemaValidator validator, DevfileManager devfileManager, DevfileIntegrityValidator devfileIntegrityValidator) {
+        this.urlFetcher = urlFetcher;
         this.validator = validator;
-        mapper =   new ObjectMapper();
-        SimpleModule module = new SimpleModule();
-        module.addDeserializer(DevfileDto.class, new DevfileDtoDeserializer());
-        mapper.registerModule(module);
+        this.devfileContentProvider = new URLFileContentProvider(null, urlFetcher);
+        this.devfileManager = devfileManager;
+        this.devfileIntegrityValidator = devfileIntegrityValidator;
+        mapper = new ObjectMapper();
+
 
     }
 
@@ -77,11 +88,23 @@ public class WorkspaceDtoImplProvider extends CheJsonProvider<WorkspaceDto> {
 //            }
 //        }
 //        throw new ClientErrorException("Unknown media type " + mediaType.toString(), 400);
+
+
         try {
-            return mapper.readValue(entityStream, DtoServerImpls.WorkspaceDtoImpl.class);
-        }catch (Exception e){
+            JsonNode wsNode = mapper.readTree(entityStream);
+            JsonNode devfileNode = wsNode.path("devfile");
+            if (!devfileNode.isNull()) {
+                Devfile devfile = devfileManager.parseJson(devfileNode.toString());
+                if(devfile !=null) {
+                    devfileIntegrityValidator.validateContentReferences(devfile, FileContentProvider.cached(devfileContentProvider));
+                }
+            }
+            return DtoFactory.getInstance().createDtoFromJson(wsNode.toString(), WorkspaceDto.class);
+        } catch (DevfileFormatException e) {
+            throw new ClientErrorException("Invalid davfile: " + e.getMessage(), 400);
+        } catch (Exception e) {
             e.printStackTrace();
-            throw  e;
+            throw e;
         }
     }
 
@@ -103,19 +126,4 @@ public class WorkspaceDtoImplProvider extends CheJsonProvider<WorkspaceDto> {
         }
     }
 
-     class DevfileDtoDeserializer extends JsonDeserializer<DevfileDto> {
-
-
-        @Override
-        public DevfileDto deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            try {
-                TreeNode value = p.readValueAsTree();
-                validator.validate((JsonNode) value);
-                return (DevfileDto) mapper.treeToValue(value, DevfileImpl.class);
-            } catch (DevfileFormatException e) {
-                throw JsonMappingException.from(ctxt, e.getMessage(), e);
-            }
-
-        }
-    }
 }

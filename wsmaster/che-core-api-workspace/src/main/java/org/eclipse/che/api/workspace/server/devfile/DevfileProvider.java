@@ -1,10 +1,13 @@
 package org.eclipse.che.api.workspace.server.devfile;
 
+import org.eclipse.che.api.core.ApiException;
+import org.eclipse.che.api.core.BadRequestException;
 import org.eclipse.che.api.core.model.workspace.devfile.Devfile;
 import org.eclipse.che.api.workspace.server.DtoConverter;
 import org.eclipse.che.api.workspace.server.devfile.exception.DevfileFormatException;
 import org.eclipse.che.api.workspace.shared.dto.WorkspaceDto;
 import org.eclipse.che.api.workspace.shared.dto.devfile.DevfileDto;
+import org.eclipse.che.dto.server.DtoFactory;
 import org.eclipse.che.dto.server.JsonSerializable;
 
 import javax.inject.Inject;
@@ -16,6 +19,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
@@ -51,8 +55,11 @@ public class DevfileProvider implements MessageBodyReader<DevfileDto>, MessageBo
             try {
                 Devfile v = manager.parseJson(new InputStreamReader(entityStream));
                 return (DevfileDto) v;
-            } catch (DevfileFormatException e) {
-                throw new ClientErrorException(e.getMessage(), 400, e);
+            } catch (DevfileFormatException exception) {
+                throw new WebApplicationException(exception.getMessage(), Response.status(Response.Status.BAD_REQUEST)
+                        .entity(DtoFactory.getInstance().toJson(new ApiException(exception.getMessage()).getServiceError()))
+                        .type(MediaType.APPLICATION_JSON)
+                        .build());
             }
         } else if (mediaType.isCompatible(MediaType.valueOf("text/yaml")) || mediaType.isCompatible(MediaType.valueOf("text/x-yaml"))) {
             try {
