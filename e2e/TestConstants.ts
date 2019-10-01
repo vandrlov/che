@@ -163,5 +163,10 @@ export const TestConstants = {
      * GitHub auth token (for checking GitHub PR plugin)
      */
     GITHUB_AUTH_TOKEN: process.env.GITHUB_AUTH_TOKEN || ''
+    
+     /**
+     * Log level settings, possible variants: 'INFO' (by default), 'DEBUG', 'TRACE'.
+     */
+    TS_SELENIUM_LOG_LEVEL: process.env.TS_SELENIUM_LOG_LEVEL || 'INFO'
 
 };
