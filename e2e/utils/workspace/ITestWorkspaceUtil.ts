@@ -15,5 +15,5 @@ export interface ITestWorkspaceUtil {
     waitPluginAdding(namespace: string, workspaceName: string, pluginId: string) : void;
     removeWorkspaceById(id: string) : void;
     stopWorkspaceById(id: string) : void;
-    getIdOfRunningWorkspace(namespace: string): Promise<string>;
+    getIdOfRunningWorkspaces(namespace: string): Promise<Array<string>>;
 }

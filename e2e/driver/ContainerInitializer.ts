@@ -13,6 +13,7 @@ import { TYPES, CLASSES } from '../inversify.types';
 import { ChromeDriver } from './ChromeDriver';
 import { DriverHelper } from '../utils/DriverHelper';
 import { ICheLoginPage } from '../pageobjects/login/ICheLoginPage';
+import { TestWorkspaceUtils } from '../utils/workspace/TestWorkspaceUtil';
 import { IOcpLoginPage } from '../pageobjects/login/IOcpLoginPage';
 import { SingleUserLoginPage } from '../pageobjects/login/SingleUserLoginPage';
 import { Dashboard } from '../pageobjects/dashboard/Dashboard';
@@ -21,7 +22,6 @@ import { NewWorkspace } from '../pageobjects/dashboard/NewWorkspace';
 import { WorkspaceDetails } from '../pageobjects/dashboard/workspace-details/WorkspaceDetails';
 import { WorkspaceDetailsPlugins } from '../pageobjects/dashboard/workspace-details/WorkspaceDetailsPlugins';
 import { Ide } from '../pageobjects/ide/Ide';
-import { TestWorkspaceUtil } from '../utils/workspace/TestWorkspaceUtil';
 import { ProjectTree } from '../pageobjects/ide/ProjectTree';
 import { Editor } from '../pageobjects/ide/Editor';
 import { TopMenu } from '../pageobjects/ide/TopMenu';
@@ -46,7 +46,7 @@ export function getContainer(): Container {
     const e2eContainer = new Container();
 
     e2eContainer.bind<IDriver>(TYPES.Driver).to(ChromeDriver).inSingletonScope();
-    e2eContainer.bind<ITestWorkspaceUtil>(TYPES.WorkspaceUtil).to(TestWorkspaceUtil).inSingletonScope();
+    e2eContainer.bind<ITestWorkspaceUtil>(TYPES.WorkspaceUtil).to(TestWorkspaceUtils).inSingletonScope();
     e2eContainer.bind<IOcpLoginPage>(TYPES.OcpLogin).to(OcpLoginByTempAdmin).inSingletonScope();
 
     if (TestConstants.TS_SELENIUM_MULTIUSER) {
