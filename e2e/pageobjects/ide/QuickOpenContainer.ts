@@ -36,7 +36,7 @@ export class QuickOpenContainer {
     public async clickOnContainerItem(itemText: string, timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
         Logger.debug(`QuickOpenContainer.clickOnContainerItem "${itemText}"`);
 
-        const quickContainerItemLocator: By = By.xpath(`//div[@class='quick-open-entry']//span[text()='${itemText}']`);
+        const quickContainerItemLocator: By = By.css(`div[aria-label="${itemText}, picker"]`);
 
         await this.waitContainer(timeout);
         await this.driverHelper.waitAndClick(quickContainerItemLocator, timeout);
@@ -51,10 +51,6 @@ export class QuickOpenContainer {
 
     public async typeAndSelectSuggestion(text: string, suggestedText: string) {
         await this.driverHelper.type(By.css('div.monaco-inputbox  input.input'), text);
-        
         await this.clickOnContainerItem(suggestedText);
-        await this.driverHelper.switchToSecondWindow(mainWindowHandle)
-        await this.driverHelper.waitAndGetValue(By.css('div.monaco-inputbox  input.input'));
-
     }
 }

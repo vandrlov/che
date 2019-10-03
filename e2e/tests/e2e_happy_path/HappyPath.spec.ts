@@ -83,13 +83,12 @@ suite('Validation of workspace start', async () => {
         await isureClickOnMenu('View', 'Find Command...');
         await quickOpenContainer.typeAndSelectSuggestion('GitHub', 'GitHub Pull Requests: Manually Provide Authentication Response');
         await quickOpenContainer.typeAndSelectSuggestion(TestConstants.GITHUB_AUTH_TOKEN, 'Token (Press \'Enter\' to confirm your input or \'Escape\' to cancel)' );
-        await quickOpenContainer.typeAndSelectSuggestion('github.com', 'Token (Press \'Enter\' to confirm your input or \'Escape\' to cancel)' );
-
+        await quickOpenContainer.typeAndSelectSuggestion('github.com', 'Server (Press \'Enter\' to confirm your input or \'Escape\' to cancel)' );
         await githubPrPlugin.waitAndClickOnOctocatIcon();
-        await driverHelper.getDriver().sleep(30000);
+        await driverHelper.getDriver().sleep(300000);
     });
 
-    test('Wait until project is imported', async () => {
+    test.skip('Wait until project is imported', async () => {
         const rootWsName: string = 'projects';
         const mainWindowHandle: string = await driverHelper.getDriver().getWindowHandle();
         await topMenu.selectOption('File', 'Open Workspace...');
@@ -101,7 +100,7 @@ suite('Validation of workspace start', async () => {
 
 });
 
-suite('Language server validation', async () => {
+suite.skip('Language server validation', async () => {
     test('Java LS initialization', async () => {
         await projectTree.expandPathAndOpenFileInAssociatedWorkspace(pathToJavaFolder, javaFileName);
         await editor.selectTab(javaFileName);
@@ -156,7 +155,7 @@ suite('Language server validation', async () => {
     });
 });
 
-suite('Validation of workspace build and run', async () => {
+suite.skip('Validation of workspace build and run', async () => {
     test('Build application', async () => {
         await runTask('che: build-file-output');
         await projectTree.expandPathAndOpenFileInAssociatedWorkspace(projectName, 'build-output.txt');
@@ -186,7 +185,7 @@ suite('Validation of workspace build and run', async () => {
     });
 });
 
-suite('Display source code changes in the running application', async () => {
+suite.skip('Display source code changes in the running application', async () => {
     test('Change source code', async () => {
         await projectTree.expandPathAndOpenFileInAssociatedWorkspace(pathToChangedJavaFileFolder, changedJavaFileName);
         await editor.waitEditorAvailable(changedJavaFileName);
@@ -230,7 +229,7 @@ suite('Display source code changes in the running application', async () => {
     });
 });
 
-suite('Validation of debug functionality', async () => {
+suite.skip('Validation of debug functionality', async () => {
     test('Open file and activate breakpoint', async () => {
         await projectTree.expandPathAndOpenFileInAssociatedWorkspace(pathToJavaFolder, javaFileName);
         await editor.activateBreakpoint(javaFileName, 32);
