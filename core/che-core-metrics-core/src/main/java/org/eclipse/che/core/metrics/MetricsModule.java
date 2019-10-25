@@ -27,6 +27,7 @@ import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
 import io.micrometer.core.instrument.binder.system.UptimeMetrics;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import io.prometheus.client.CollectorRegistry;
+import okhttp3.EventListener;
 
 @Beta
 public class MetricsModule extends AbstractModule {
@@ -53,5 +54,7 @@ public class MetricsModule extends AbstractModule {
     meterMultibinder.addBinding().to(ApiResponseCounter.class);
     meterMultibinder.addBinding().to(ProcessMemoryMetrics.class);
     meterMultibinder.addBinding().to(ProcessThreadMetrics.class);
+
+    bind(EventListener.class).toProvider(OkHttpMetricsEventListenerProvider.class);
   }
 }
