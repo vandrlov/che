@@ -350,6 +350,7 @@ export class DriverHelper {
     }
 
     public async waitAndSwitchToFrame(iframeLocator: By, timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
+        console.log("Timeout in method waitAndSwitchToFrame in DriverHelper set to: " + timeout )
         await this.driver.wait(until.ableToSwitchToFrame(iframeLocator), timeout);
     }
 

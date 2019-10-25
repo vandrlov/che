@@ -12,10 +12,10 @@ import { e2eContainer } from '../../inversify.config';
 import { CLASSES, TYPES } from '../../inversify.types';
 import { Ide } from '../../pageobjects/ide/Ide';
 import { ProjectTree } from '../../pageobjects/ide/ProjectTree';
-import { TestConstants } from '../../TestConstants';
 import { DriverHelper } from '../../utils/DriverHelper';
 import { ICheLoginPage } from '../../pageobjects/login/ICheLoginPage';
 import { TestWorkspaceUtils } from '../../utils/workspace/TestWorkspaceUtil';
+import { TestConstants } from '../..';
 const driverHelper: DriverHelper = e2eContainer.get(CLASSES.DriverHelper);
 const ide: Ide = e2eContainer.get(CLASSES.Ide);
 const projectTree: ProjectTree = e2eContainer.get(CLASSES.ProjectTree);
@@ -36,9 +36,12 @@ suite('Load test suite', async () => {
     });
 
     test('Wait loading workspace and get time', async () => {
+        let d = new Date();
+        console.log('WaitAndSwitchToIdeFrame ' + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
         await ide.waitAndSwitchToIdeFrame();
+        d = new Date();
+        console.log('OpenProjectTreeContianer ' + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds());
         await projectTree.openProjectTreeContainer();
-
     });
 
 });

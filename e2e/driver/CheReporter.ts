@@ -82,7 +82,7 @@ class CheReporter extends mocha.reporters.Spec {
     });
 
     runner.on('pass', async (test: mocha.Test) => {
-      const loadTestReportFolder: string = './load-test-folder';
+      const loadTestReportFolder: string = TestConstants.TS_SELENIUM_LOAD_TEST_REPORT_FOLDER;
       const loadTestFilePath: string = loadTestReportFolder + '/load-test-results.txt';
       const report = test.title + ': ' + test.duration + '\r';
       if (!fs.existsSync(loadTestReportFolder)) {

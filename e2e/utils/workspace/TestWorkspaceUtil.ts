@@ -154,12 +154,11 @@ export class TestWorkspaceUtils implements ITestWorkspaceUtil {
         const keycloakUrl = TestConstants.TS_SELENIUM_BASE_URL.replace('che', 'keycloak') + keycloakAuthSuffix;
         const params = {
             client_id: 'che-public',
-            password: TestConstants.TS_SELENIUM_USERNAME,
-            username: TestConstants.TS_SELENIUM_PASSWORD,
+            username: TestConstants.TS_SELENIUM_USERNAME,
+            password: TestConstants.TS_SELENIUM_PASSWORD,
             grant_type: 'password'
         };
         const responseToObtainBearerToken = await axios.post(keycloakUrl, querystring.stringify(params));
-
         return responseToObtainBearerToken.data.access_token;
     }
 
@@ -174,8 +173,9 @@ export class TestWorkspaceUtils implements ITestWorkspaceUtil {
     }
 
     public async cleanUpAllWorkspaces() {
+        let d = new Date();
+        console.log("Cleaning workspaces at " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds())
         let listOfRunningWorkspaces: Array<string> = await this.getIdOfRunningWorkspaces();
-
         for (const entry of listOfRunningWorkspaces) {
             await this.stopWorkspaceById(entry);
         }

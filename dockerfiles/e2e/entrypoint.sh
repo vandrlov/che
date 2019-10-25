@@ -49,4 +49,31 @@ fi
 
 
 # Launch tests
-npm run $TEST_SUITE
+if [ $TEST_SUITE == "load-test" ]; then
+
+  echo "Running LOAD TESTS with user: $TS_SELENIUM_USERNAME"
+  export TS_SELENIUM_REPORT_FOLDER="./$TS_SELENIUM_USERNAME/report"
+  export TS_SELENIUM_LOAD_TEST_REPORT_FOLDER="./$TS_SELENIUM_USERNAME/load-test-folder"
+  CONSOLE_LOGS="./$TS_SELENIUM_USERNAME/console-log.txt"
+  mkdir $TS_SELENIUM_USERNAME
+  touch $CONSOLE_LOGS
+
+  npm run $TEST_SUITE 2>&1 | tee $CONSOLE_LOGS
+
+  echo "Zipping a files..."
+  zip -q -r $TS_SELENIUM_USERNAME.zip ./$TS_SELENIUM_USERNAME
+
+  echo "Sending via FTP..."
+  #cp -r ./$TS_SELENIUM_USERNAME /mnt/mountedVolume/$TIMESTAMP/$TS_SELENIUM_USERNAME
+  ftp -n load-tests-ftp-service << End_script 
+  user user pass1234
+  binary
+  put $TS_SELENIUM_USERNAME.zip
+  quit
+End_script
+  
+  echo "Files sent to load-tests-ftp-service."
+else
+  echo "Running TEST_SUITE: $TEST_SUITE with user: $TS_SELENIUM_USERNAME and pass: $TS_SELENIUM_PASSWORD"
+  npm run $TEST_SUITE
+fi

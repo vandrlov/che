@@ -120,6 +120,11 @@ export const TestConstants = {
     TS_SELENIUM_REPORT_FOLDER: process.env.TS_SELENIUM_REPORT_FOLDER || './report',
 
     /**
+     * Path to folder with load tests execution report.
+     */
+    TS_SELENIUM_LOAD_TEST_REPORT_FOLDER: process.env.TS_SELENIUM_LOAD_TEST_REPORT_FOLDER || './load-test-folder',
+
+    /**
      * Enable or disable storing of execution screencast, "true" by default.
      */
     TS_SELENIUM_EXECUTION_SCREENCAST: process.env.TS_SELENIUM_EXECUTION_SCREENCAST !== 'false',
