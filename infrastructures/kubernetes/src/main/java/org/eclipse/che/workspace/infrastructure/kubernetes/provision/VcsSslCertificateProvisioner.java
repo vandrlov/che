@@ -24,6 +24,7 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeBuilder;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.VolumeMountBuilder;
+
 import java.util.Optional;
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -49,30 +50,29 @@ public class VcsSslCertificateProvisioner
   private static final String HTTPS = "https://";
 
   @Inject(optional = true)
-  @Named("che.git.self_signed_cert")
-  private String certificate;
-
-  @Inject(optional = true)
-  @Named("che.git.self_signed_cert_host")
-  private String host;
+  @Named("che.git.certs_path")
+  private String certsPath;
 
   public VcsSslCertificateProvisioner() {}
 
+
+
   @VisibleForTesting
-  VcsSslCertificateProvisioner(String certificate, String host) {
-    this.certificate = certificate;
-    this.host = host;
+  VcsSslCertificateProvisioner(String certsPathFolder) {
+    this.certsPath = certsPathFolder;
   }
 
   /** @return true only if */
   public boolean isConfigured() {
-    return !isNullOrEmpty(certificate);
+    return !isNullOrEmpty(certsPath);
   }
 
-  public String getCertPath() {
+  public String getCertsBasePath() {
     return CERT_MOUNT_PATH + CA_CERT_FILE;
   }
 
+
+  public List<String> getHosts()
   public String getGitServerHost() {
     if (isNullOrEmpty(host)) {
       return nullToEmpty(host);
