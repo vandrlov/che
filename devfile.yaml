@@ -11,7 +11,7 @@ components:
     image: 'eclipse/che-dev:nightly'
     alias: che-server-dev
     mountSources: true
-    memoryLimit: 5Gi
+    memoryLimit: 1.5Gi
     volumes:
       - name: maven
         containerPath: /home/user/.m2
@@ -19,7 +19,7 @@ components:
     image: 'eclipse/che-server:nightly'
     alias: che-server-runtime
     mountSources: true
-    memoryLimit: 1Gi
+    memoryLimit: 512Mi
     endpoints:
       - name: che-dev
         attributes:

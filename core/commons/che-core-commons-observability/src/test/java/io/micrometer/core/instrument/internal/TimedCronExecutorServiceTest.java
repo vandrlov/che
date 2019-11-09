@@ -20,6 +20,7 @@ import io.micrometer.core.instrument.simple.SimpleConfig;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import java.text.ParseException;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.eclipse.che.commons.schedule.executor.CronExpression;
 import org.eclipse.che.commons.schedule.executor.CronThreadPoolExecutor;
 import org.testng.annotations.BeforeMethod;
@@ -48,13 +49,12 @@ public class TimedCronExecutorServiceTest {
     CountDownLatch lock = new CountDownLatch(1);
     // when
     executorService.schedule(
-        () -> {
-          lock.countDown();
-        },
+        lock::countDown,
         // one time per second
         new CronExpression(" * * * ? * * *"));
 
-    lock.await();
+    lock.await(10, TimeUnit.SECONDS);
+    Thread.sleep(100);
     // then
     assertEquals(
         registry

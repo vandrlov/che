@@ -356,14 +356,17 @@ public class MeteredExecutorServiceWrapperTest {
             .gauge()
             .value(),
         2.0);
-    assertEquals(
-        registry
-            .get("executor.completed")
-            .tag("name", MeteredExecutorServiceWrapperTest.class.getName())
-            .tags(userTags)
-            .functionCounter()
-            .count(),
-        1.0);
+    assertWithRetry(
+        () ->
+            registry
+                .get("executor.completed")
+                .tag("name", MeteredExecutorServiceWrapperTest.class.getName())
+                .tags(userTags)
+                .functionCounter()
+                .count(),
+        1.0,
+        10,
+        50);
     assertWithRetry(
         () ->
             registry
