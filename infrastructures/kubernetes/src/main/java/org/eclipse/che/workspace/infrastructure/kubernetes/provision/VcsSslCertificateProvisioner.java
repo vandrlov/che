@@ -12,10 +12,9 @@
 package org.eclipse.che.workspace.infrastructure.kubernetes.provision;
 
 import static com.google.common.base.Strings.isNullOrEmpty;
-import static com.google.common.base.Strings.nullToEmpty;
-import static java.util.Collections.singletonMap;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapVolumeSourceBuilder;
@@ -24,8 +23,16 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeBuilder;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.kubernetes.api.model.VolumeMountBuilder;
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import org.eclipse.che.api.core.model.workspace.runtime.RuntimeIdentity;
@@ -45,7 +52,7 @@ public class VcsSslCertificateProvisioner
   static final String CHE_GIT_SELF_SIGNED_CERT_CONFIG_MAP_SUFFIX = "-che-git-self-signed-cert";
   static final String CHE_GIT_SELF_SIGNED_VOLUME = "che-git-self-signed-cert";
   static final String CERT_MOUNT_PATH = "/etc/che/git/cert/";
-  static final String CA_CERT_FILE = "cert.pem";
+  static final String CA_CERT_FILE = "ca.crt";
 
   private static final String HTTPS = "https://";
 
@@ -53,13 +60,16 @@ public class VcsSslCertificateProvisioner
   @Named("che.git.certs_path")
   private String certsPath;
 
-  public VcsSslCertificateProvisioner() {}
+  private Map<String, String> certs = new HashMap<>();
 
-
+  public VcsSslCertificateProvisioner() {
+    readCerts();
+  }
 
   @VisibleForTesting
   VcsSslCertificateProvisioner(String certsPathFolder) {
     this.certsPath = certsPathFolder;
+    readCerts();
   }
 
   /** @return true only if */
@@ -67,24 +77,47 @@ public class VcsSslCertificateProvisioner
     return !isNullOrEmpty(certsPath);
   }
 
-  public String getCertsBasePath() {
-    return CERT_MOUNT_PATH + CA_CERT_FILE;
+  private List<Path> readFiles() {
+    if (Strings.isNullOrEmpty(certsPath)) {
+      return Collections.EMPTY_LIST;
+    }
+    try {
+      return Files.walk(Paths.get(certsPath))
+          .filter(Files::isRegularFile)
+          .collect(Collectors.toList());
+    } catch (IOException e) {
+      return Collections.EMPTY_LIST;
+    }
   }
 
-
-  public List<String> getHosts()
-  public String getGitServerHost() {
-    if (isNullOrEmpty(host)) {
-      return nullToEmpty(host);
+  private void readCerts() {
+    List<Path> paths = readFiles();
+    for (Path path : paths) {
+      try {
+        byte[] encoded = Files.readAllBytes(path);
+        certs.put(path.getFileName().toString(), new String(encoded));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
+  }
 
-    StringBuilder gitServerHosts = new StringBuilder(" \"");
-    if (!host.startsWith(HTTPS)) {
-      gitServerHosts.append(HTTPS);
+  public String getHostConfigs() {
+    StringBuilder config = new StringBuilder();
+    List<Path> hosts = readFiles();
+    for (Path host : hosts) {
+      config
+          .append("[http \"")
+          .append(HTTPS)
+          .append(host.getFileName().toString())
+          .append("\"]")
+          .append('\n')
+          .append('\t')
+          .append("sslCAInfo = ")
+          .append(host.toAbsolutePath().toString())
+          .append('\n');
     }
-    gitServerHosts.append(host);
-    gitServerHosts.append("\"");
-    return gitServerHosts.toString();
+    return config.toString();
   }
 
   @Override
@@ -103,7 +136,7 @@ public class VcsSslCertificateProvisioner
                 .withNewMetadata()
                 .withName(selfSignedCertConfigMapName)
                 .endMetadata()
-                .withData(singletonMap(CA_CERT_FILE, certificate))
+                .withData(certs)
                 .build());
 
     for (PodData pod : k8sEnv.getPodsData().values()) {

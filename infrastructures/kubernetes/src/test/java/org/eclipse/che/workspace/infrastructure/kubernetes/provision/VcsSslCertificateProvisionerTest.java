@@ -11,7 +11,6 @@
  */
 package org.eclipse.che.workspace.infrastructure.kubernetes.provision;
 
-import static org.eclipse.che.workspace.infrastructure.kubernetes.provision.VcsSslCertificateProvisioner.CA_CERT_FILE;
 import static org.eclipse.che.workspace.infrastructure.kubernetes.provision.VcsSslCertificateProvisioner.CERT_MOUNT_PATH;
 import static org.eclipse.che.workspace.infrastructure.kubernetes.provision.VcsSslCertificateProvisioner.CHE_GIT_SELF_SIGNED_CERT_CONFIG_MAP_SUFFIX;
 import static org.eclipse.che.workspace.infrastructure.kubernetes.provision.VcsSslCertificateProvisioner.CHE_GIT_SELF_SIGNED_VOLUME;
@@ -29,9 +28,10 @@ import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import org.eclipse.che.api.core.model.workspace.runtime.RuntimeIdentity;
 import org.eclipse.che.workspace.infrastructure.kubernetes.environment.KubernetesEnvironment;
 import org.mockito.Mock;
@@ -39,6 +39,7 @@ import org.mockito.testng.MockitoTestNGListener;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.testng.reporters.Files;
 
 /**
  * Tests {@link VcsSslCertificateProvisioner}.
@@ -52,19 +53,30 @@ public class VcsSslCertificateProvisionerTest {
   private static final String EXPECTED_CERT_NAME =
       WORKSPACE_ID + CHE_GIT_SELF_SIGNED_CERT_CONFIG_MAP_SUFFIX;
 
-  public static final String CERT_CONTENT =
-      "-----BEGIN CERTIFICATE-----\n"
-          + UUID.randomUUID().toString()
-          + "\n-----END CERTIFICATE-----";
   @Mock private RuntimeIdentity runtimeId;
   private VcsSslCertificateProvisioner provisioner;
   private KubernetesEnvironment k8sEnv;
+  private String localhostCert;
+  private String ipCert;
+  private String certsPath;
+  private File localhostFile;
+  private File ipFile;
 
   @BeforeMethod
-  public void setUp() {
+  public void setUp() throws IOException {
     when(runtimeId.getWorkspaceId()).thenReturn(WORKSPACE_ID);
 
-    provisioner = new VcsSslCertificateProvisioner(CERT_CONTENT, "");
+    ClassLoader classLoader = getClass().getClassLoader();
+
+    localhostFile = new File(classLoader.getResource("certs/localhost").getFile());
+    localhostCert = Files.readFile(localhostFile);
+
+    ipFile = new File(classLoader.getResource("certs/127.0.0.1:1234").getFile());
+    ipCert = Files.readFile(ipFile);
+
+    certsPath = ipFile.toPath().getParent().toAbsolutePath().toString();
+
+    provisioner = new VcsSslCertificateProvisioner(certsPath);
     k8sEnv = KubernetesEnvironment.builder().build();
   }
 
@@ -76,14 +88,21 @@ public class VcsSslCertificateProvisionerTest {
 
   @Test
   public void shouldReturnTrueIfCertificateIsConfigured() {
-    provisioner = new VcsSslCertificateProvisioner(CERT_CONTENT, "localhost");
+    provisioner = new VcsSslCertificateProvisioner("localhost");
     assertTrue(provisioner.isConfigured());
   }
 
   @Test
   public void shouldReturnCertPathFile() {
-    String certPath = provisioner.getCertPath();
-    assertEquals(certPath, "/etc/che/git/cert/cert.pem");
+    String certPath = provisioner.getHostConfigs();
+    assertEquals(
+        certPath,
+        "[http \"https://127.0.0.1:1234\"]\n\tsslCAInfo = "
+            + ipFile.getAbsolutePath()
+            + "\n"
+            + "[http \"https://localhost\"]\n\tsslCAInfo = "
+            + localhostFile.getAbsolutePath()
+            + "\n");
   }
 
   @Test
@@ -96,7 +115,7 @@ public class VcsSslCertificateProvisionerTest {
     ConfigMap configMap = configMaps.get(EXPECTED_CERT_NAME);
     assertNotNull(configMap);
     assertEquals(configMap.getMetadata().getName(), EXPECTED_CERT_NAME);
-    assertEquals(configMap.getData().get(CA_CERT_FILE), CERT_CONTENT);
+    assertEquals(configMap.getData().get("localhost").trim(), localhostCert.trim());
   }
 
   @Test
@@ -123,7 +142,7 @@ public class VcsSslCertificateProvisionerTest {
   public void
       shouldNotAddVolumeAndVolumeMountsToPodsAndContainersInEnvironmentIfCertIsNotConfigured()
           throws Exception {
-    provisioner = new VcsSslCertificateProvisioner("", "");
+    provisioner = new VcsSslCertificateProvisioner();
     k8sEnv.addPod(createPod("pod"));
     k8sEnv.addPod(createPod("pod2"));
 
@@ -135,18 +154,6 @@ public class VcsSslCertificateProvisionerTest {
         assertTrue(container.getVolumeMounts().isEmpty());
       }
     }
-  }
-
-  @Test
-  public void shouldReturnWellFormattedHostIfPresent() {
-    provisioner = new VcsSslCertificateProvisioner("", "localhost");
-    assertEquals(provisioner.getGitServerHost(), " \"https://localhost\"");
-
-    provisioner = new VcsSslCertificateProvisioner("", "https://localhost");
-    assertEquals(provisioner.getGitServerHost(), " \"https://localhost\"");
-
-    provisioner = new VcsSslCertificateProvisioner("", "localhost:8080");
-    assertEquals(provisioner.getGitServerHost(), " \"https://localhost:8080\"");
   }
 
   private void verifyVolumeIsPresent(Pod pod) {

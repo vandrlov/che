@@ -184,14 +184,7 @@ public class GitConfigProvisioner implements ConfigurationProvisioner<Kubernetes
     }
 
     if (vcsSslCertificateProvisioner.isConfigured()) {
-      config
-          .append("[http")
-          .append(vcsSslCertificateProvisioner.getGitServerHost())
-          .append("]")
-          .append('\n')
-          .append('\t')
-          .append("sslCAInfo = ")
-          .append(vcsSslCertificateProvisioner.getCertPath());
+      config.append(vcsSslCertificateProvisioner.getHostConfigs());
     }
 
     return of(config.toString());
