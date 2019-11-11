@@ -165,7 +165,7 @@ suite('Validation of workspace build and run', async () => {
     });
 
     test('Check the running application', async () => {
-        await previewWidget.waitContentAvailable(SpringAppLocators.springTitleLocator, 60000, 10000);
+        await previewWidget.waitContentAvailable(SpringAppLocators.springTitleLocator, 120000, 30000);
     });
 
     test('Close preview widget', async () => {
