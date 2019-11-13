@@ -98,10 +98,12 @@ public class VcsSslCertificateProvisionerTest {
     assertEquals(
         certPath,
         "[http \"https://127.0.0.1:1234\"]\n\tsslCAInfo = "
-            + ipFile.getAbsolutePath()
+            + CERT_MOUNT_PATH
+            + ipFile.getName()
             + "\n"
             + "[http \"https://localhost\"]\n\tsslCAInfo = "
-            + localhostFile.getAbsolutePath()
+            + CERT_MOUNT_PATH
+            + localhostFile.getName()
             + "\n");
   }
 

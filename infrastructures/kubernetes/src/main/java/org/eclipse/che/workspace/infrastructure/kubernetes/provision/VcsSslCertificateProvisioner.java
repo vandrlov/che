@@ -62,14 +62,11 @@ public class VcsSslCertificateProvisioner
 
   private Map<String, String> certs = new HashMap<>();
 
-  public VcsSslCertificateProvisioner() {
-    readCerts();
-  }
+  public VcsSslCertificateProvisioner() {}
 
   @VisibleForTesting
   VcsSslCertificateProvisioner(String certsPathFolder) {
     this.certsPath = certsPathFolder;
-    readCerts();
   }
 
   /** @return true only if */
@@ -91,6 +88,9 @@ public class VcsSslCertificateProvisioner
   }
 
   private void readCerts() {
+    if (!certs.isEmpty()) {
+      return;
+    }
     List<Path> paths = readFiles();
     for (Path path : paths) {
       try {
@@ -110,11 +110,11 @@ public class VcsSslCertificateProvisioner
           .append("[http \"")
           .append(HTTPS)
           .append(host.getFileName().toString())
-          .append("\"]")
+          .append("*\"]")
           .append('\n')
           .append('\t')
           .append("sslCAInfo = ")
-          .append(host.toAbsolutePath().toString())
+          .append(CERT_MOUNT_PATH + host.getFileName().toString())
           .append('\n');
     }
     return config.toString();
@@ -126,6 +126,7 @@ public class VcsSslCertificateProvisioner
     if (!isConfigured()) {
       return;
     }
+    readCerts();
     String selfSignedCertConfigMapName =
         identity.getWorkspaceId() + CHE_GIT_SELF_SIGNED_CERT_CONFIG_MAP_SUFFIX;
     k8sEnv

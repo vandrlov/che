@@ -139,14 +139,17 @@ spec:
             memory: 600Mi
           requests:
             memory: 256Mi
-{{- if not .Values.global.multiuser }}
         volumeMounts:
         {{- if .Values.global.useGitSelfSignedCerts }}
         - name: git-self-signed-certs
           mountPath: /tmp/git-certs
         {{- end }}
+
+        {{- if not .Values.global.multiuser }}
         - mountPath: /data
           name: che-data-volume
+        {{- end }}
+
       volumes:
       # If git-self-signed-cert is used then configure Che Server with certificate content
       # to propagate it to trust store
@@ -156,10 +159,11 @@ spec:
           name: {{ .Values.global.gitSelfSignedCertConfigMapName }}
       {{- end }}
 
+      {{- if not .Values.global.multiuser }}
       - name: che-data-volume
         persistentVolumeClaim:
           claimName: che-data-volume
-{{- end }}
+      {{- end }}
 {{- if .Values.registry }}
 {{- if and .Values.registry.password .Values.registry.username }}
       imagePullSecrets:
