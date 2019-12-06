@@ -3625,8 +3625,7 @@ data:
       "editable": true,
       "gnetId": null,
       "graphTooltip": 1,
-      "id": 2,
-      "iteration": 1574014597638,
+      "iteration": 1575637671343,
       "links": [],
       "panels": [
         {
@@ -3846,6 +3845,7 @@ data:
             "x": 0,
             "y": 7
           },
+          "hiddenSeries": false,
           "id": 36,
           "interval": "",
           "legend": {
@@ -3945,6 +3945,7 @@ data:
             "x": 6,
             "y": 7
           },
+          "hiddenSeries": false,
           "id": 48,
           "interval": "",
           "legend": {
@@ -4043,6 +4044,7 @@ data:
             "x": 12,
             "y": 7
           },
+          "hiddenSeries": false,
           "id": 6,
           "legend": {
             "avg": true,
@@ -4133,6 +4135,7 @@ data:
             "x": 18,
             "y": 7
           },
+          "hiddenSeries": false,
           "id": 59,
           "legend": {
             "avg": true,
@@ -4224,6 +4227,7 @@ data:
             "x": 0,
             "y": 12
           },
+          "hiddenSeries": false,
           "id": 44,
           "legend": {
             "avg": true,
@@ -4316,6 +4320,7 @@ data:
             "x": 6,
             "y": 12
           },
+          "hiddenSeries": false,
           "id": 49,
           "legend": {
             "avg": true,
@@ -4408,6 +4413,7 @@ data:
             "x": 12,
             "y": 12
           },
+          "hiddenSeries": false,
           "id": 8,
           "legend": {
             "avg": false,
@@ -4498,6 +4504,7 @@ data:
             "x": 18,
             "y": 12
           },
+          "hiddenSeries": false,
           "id": 10,
           "legend": {
             "avg": true,
@@ -4589,6 +4596,7 @@ data:
             "x": 0,
             "y": 17
           },
+          "hiddenSeries": false,
           "id": 62,
           "legend": {
             "avg": true,
@@ -4681,6 +4689,7 @@ data:
             "x": 6,
             "y": 17
           },
+          "hiddenSeries": false,
           "id": 77,
           "legend": {
             "avg": false,
@@ -4789,6 +4798,7 @@ data:
             "x": 0,
             "y": 23
           },
+          "hiddenSeries": false,
           "id": 78,
           "legend": {
             "avg": false,
@@ -4893,6 +4903,7 @@ data:
             "x": 0,
             "y": 29
           },
+          "hiddenSeries": false,
           "id": 16,
           "legend": {
             "avg": false,
@@ -4972,7 +4983,7 @@ data:
         },
         {
           "collapsed": false,
-          "datasource": null,
+          "datasource": "$datasource",
           "gridPos": {
             "h": 1,
             "w": 24,
@@ -4989,7 +5000,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "che",
+          "datasource": "$datasource",
           "description": "",
           "fill": 1,
           "fillGradient": 0,
@@ -4999,6 +5010,7 @@ data:
             "x": 0,
             "y": 37
           },
+          "hiddenSeries": false,
           "id": 105,
           "interval": "",
           "legend": {
@@ -5077,7 +5089,7 @@ data:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "che",
+          "datasource": "$datasource",
           "description": "",
           "fill": 1,
           "fillGradient": 0,
@@ -5087,6 +5099,7 @@ data:
             "x": 12,
             "y": 37
           },
+          "hiddenSeries": false,
           "id": 108,
           "interval": "",
           "legend": {
@@ -5188,6 +5201,7 @@ data:
             "x": 0,
             "y": 46
           },
+          "hiddenSeries": false,
           "id": 66,
           "legend": {
             "avg": true,
@@ -5274,6 +5288,7 @@ data:
             "x": 6,
             "y": 46
           },
+          "hiddenSeries": false,
           "id": 68,
           "legend": {
             "avg": true,
@@ -5360,6 +5375,7 @@ data:
             "x": 12,
             "y": 46
           },
+          "hiddenSeries": false,
           "id": 70,
           "legend": {
             "avg": true,
@@ -5447,6 +5463,7 @@ data:
             "x": 18,
             "y": 46
           },
+          "hiddenSeries": false,
           "id": 72,
           "legend": {
             "avg": true,
@@ -5533,6 +5550,7 @@ data:
             "x": 0,
             "y": 52
           },
+          "hiddenSeries": false,
           "id": 74,
           "legend": {
             "avg": true,
@@ -5619,6 +5637,7 @@ data:
             "x": 6,
             "y": 52
           },
+          "hiddenSeries": false,
           "id": 76,
           "legend": {
             "avg": true,
@@ -5719,6 +5738,7 @@ data:
             "x": 0,
             "y": 59
           },
+          "hiddenSeries": false,
           "id": 18,
           "interval": "",
           "legend": {
@@ -5813,6 +5833,7 @@ data:
             "x": 12,
             "y": 59
           },
+          "hiddenSeries": false,
           "id": 30,
           "legend": {
             "avg": false,
@@ -5904,6 +5925,7 @@ data:
             "x": 0,
             "y": 66
           },
+          "hiddenSeries": false,
           "id": 32,
           "legend": {
             "alignAsTable": false,
@@ -6000,6 +6022,7 @@ data:
             "x": 12,
             "y": 66
           },
+          "hiddenSeries": false,
           "id": 28,
           "interval": "",
           "legend": {
@@ -6092,6 +6115,7 @@ data:
             "x": 0,
             "y": 73
           },
+          "hiddenSeries": false,
           "id": 26,
           "interval": "",
           "legend": {
@@ -6186,6 +6210,7 @@ data:
             "x": 12,
             "y": 73
           },
+          "hiddenSeries": false,
           "id": 34,
           "legend": {
             "avg": false,
@@ -6278,6 +6303,7 @@ data:
             "x": 0,
             "y": 80
           },
+          "hiddenSeries": false,
           "id": 85,
           "interval": "",
           "legend": {
@@ -6372,6 +6398,7 @@ data:
             "x": 12,
             "y": 80
           },
+          "hiddenSeries": false,
           "id": 84,
           "interval": "",
           "legend": {
@@ -6465,6 +6492,7 @@ data:
             "x": 0,
             "y": 87
           },
+          "hiddenSeries": false,
           "id": 83,
           "interval": "",
           "legend": {
@@ -6558,6 +6586,7 @@ data:
             "x": 12,
             "y": 87
           },
+          "hiddenSeries": false,
           "id": 82,
           "interval": "",
           "legend": {
@@ -6652,6 +6681,7 @@ data:
             "x": 0,
             "y": 94
           },
+          "hiddenSeries": false,
           "id": 86,
           "interval": "",
           "legend": {
@@ -6745,6 +6775,7 @@ data:
             "x": 12,
             "y": 94
           },
+          "hiddenSeries": false,
           "id": 88,
           "interval": "",
           "legend": {
@@ -6838,6 +6869,7 @@ data:
             "x": 0,
             "y": 101
           },
+          "hiddenSeries": false,
           "id": 87,
           "interval": "",
           "legend": {
@@ -6931,6 +6963,7 @@ data:
             "x": 12,
             "y": 101
           },
+          "hiddenSeries": false,
           "id": 90,
           "interval": "",
           "legend": {
@@ -7024,6 +7057,7 @@ data:
             "x": 0,
             "y": 108
           },
+          "hiddenSeries": false,
           "id": 89,
           "interval": "",
           "legend": {
@@ -7117,6 +7151,7 @@ data:
             "x": 12,
             "y": 108
           },
+          "hiddenSeries": false,
           "id": 81,
           "interval": "",
           "legend": {
@@ -7210,6 +7245,7 @@ data:
             "x": 0,
             "y": 115
           },
+          "hiddenSeries": false,
           "id": 92,
           "interval": "",
           "legend": {
@@ -7304,6 +7340,7 @@ data:
             "x": 12,
             "y": 115
           },
+          "hiddenSeries": false,
           "id": 93,
           "interval": "",
           "legend": {
@@ -7397,6 +7434,7 @@ data:
             "x": 0,
             "y": 122
           },
+          "hiddenSeries": false,
           "id": 91,
           "interval": "",
           "legend": {
@@ -7504,6 +7542,7 @@ data:
             "x": 0,
             "y": 130
           },
+          "hiddenSeries": false,
           "id": 55,
           "legend": {
             "alignAsTable": false,
@@ -7597,6 +7636,7 @@ data:
             "x": 12,
             "y": 130
           },
+          "hiddenSeries": false,
           "id": 56,
           "legend": {
             "alignAsTable": false,
@@ -7690,6 +7730,7 @@ data:
             "x": 0,
             "y": 137
           },
+          "hiddenSeries": false,
           "id": 57,
           "legend": {
             "alignAsTable": false,
@@ -7783,6 +7824,7 @@ data:
             "x": 12,
             "y": 137
           },
+          "hiddenSeries": false,
           "id": 58,
           "legend": {
             "alignAsTable": false,
@@ -7877,6 +7919,7 @@ data:
             "x": 0,
             "y": 144
           },
+          "hiddenSeries": false,
           "id": 51,
           "legend": {
             "alignAsTable": false,
@@ -7985,6 +8028,7 @@ data:
             "x": 12,
             "y": 144
           },
+          "hiddenSeries": false,
           "id": 54,
           "legend": {
             "alignAsTable": false,
@@ -8094,6 +8138,7 @@ data:
             "x": 0,
             "y": 151
           },
+          "hiddenSeries": false,
           "id": 94,
           "legend": {
             "alignAsTable": false,
@@ -8183,6 +8228,7 @@ data:
             "x": 12,
             "y": 151
           },
+          "hiddenSeries": false,
           "id": 97,
           "legend": {
             "alignAsTable": false,
@@ -8272,6 +8318,7 @@ data:
             "x": 0,
             "y": 158
           },
+          "hiddenSeries": false,
           "id": 96,
           "legend": {
             "alignAsTable": false,
@@ -8411,6 +8458,7 @@ data:
             "x": 12,
             "y": 158
           },
+          "hiddenSeries": false,
           "id": 98,
           "legend": {
             "alignAsTable": false,
@@ -8550,6 +8598,7 @@ data:
             "x": 0,
             "y": 165
           },
+          "hiddenSeries": false,
           "id": 100,
           "legend": {
             "alignAsTable": false,
@@ -8659,6 +8708,7 @@ data:
             "x": 12,
             "y": 165
           },
+          "hiddenSeries": false,
           "id": 99,
           "legend": {
             "alignAsTable": false,
@@ -8768,6 +8818,7 @@ data:
             "x": 0,
             "y": 172
           },
+          "hiddenSeries": false,
           "id": 95,
           "legend": {
             "alignAsTable": false,
@@ -8862,6 +8913,7 @@ data:
             "x": 12,
             "y": 172
           },
+          "hiddenSeries": false,
           "id": 101,
           "legend": {
             "alignAsTable": false,
@@ -8956,6 +9008,7 @@ data:
             "x": 0,
             "y": 179
           },
+          "hiddenSeries": false,
           "id": 102,
           "legend": {
             "alignAsTable": false,
@@ -9070,6 +9123,7 @@ data:
             "x": 12,
             "y": 179
           },
+          "hiddenSeries": false,
           "id": 103,
           "legend": {
             "alignAsTable": false,
@@ -9170,13 +9224,1126 @@ data:
           }
         },
         {
-          "collapsed": true,
+          "collapsed": false,
           "datasource": "$datasource",
           "gridPos": {
             "h": 1,
             "w": 24,
             "x": 0,
             "y": 186
+          },
+          "id": 110,
+          "panels": [],
+          "title": "Websocket",
+          "type": "row"
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 0,
+            "y": 187
+          },
+          "hiddenSeries": false,
+          "id": 112,
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "che_websocket_registry_total_sessions",
+              "legendFormat": "total",
+              "refId": "A"
+            },
+            {
+              "expr": "che_websocket_registry_active_sessions",
+              "legendFormat": "activwe",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Registry sessions",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": "",
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 6,
+            "y": 187
+          },
+          "hiddenSeries": false,
+          "id": 113,
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "increase(che_websocket_endpoint_opened_sessions_total [1m])",
+              "legendFormat": "sessions",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Opened sessions/minute",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 12,
+            "y": 187
+          },
+          "hiddenSeries": false,
+          "id": 114,
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "che_websocket_resender_delayed_queue_size_max",
+              "legendFormat": "messages",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Resender max messages",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 7,
+            "w": 6,
+            "x": 18,
+            "y": 187
+          },
+          "hiddenSeries": false,
+          "id": 115,
+          "interval": "",
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "che_websocket_resender_delayed_receivers",
+              "legendFormat": "receivers",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Resender queue",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 194
+          },
+          "hiddenSeries": false,
+          "id": 116,
+          "interval": "",
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "increase(che_websocket_endpoint_received_messages_total{knownsession=\"true\"}[1m])",
+              "legendFormat": "received",
+              "refId": "A"
+            },
+            {
+              "expr": "increase(che_websocket_endpoint_sent_messages_total [1m])",
+              "legendFormat": "sent",
+              "refId": "C"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Messages/minute",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 6,
+            "y": 194
+          },
+          "hiddenSeries": false,
+          "id": 119,
+          "interval": "",
+          "legend": {
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "che_websocket_endpoint_received_messages_total",
+              "legendFormat": "received",
+              "refId": "A"
+            },
+            {
+              "expr": "che_websocket_endpoint_sent_messages_total",
+              "legendFormat": "sent",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Messages total",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 12,
+            "y": 194
+          },
+          "hiddenSeries": false,
+          "id": 122,
+          "interval": "",
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "increase(che_websocket_endpoint_received_bytes_total{knownsession=\"true\"}[1m])",
+              "legendFormat": "received",
+              "refId": "A"
+            },
+            {
+              "expr": "increase(che_websocket_endpoint_sent_bytes_total{result=\"successful\"}[1m])",
+              "legendFormat": "sent",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Bytes/minute",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 18,
+            "y": 194
+          },
+          "hiddenSeries": false,
+          "id": 123,
+          "interval": "",
+          "legend": {
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "che_websocket_endpoint_received_messages_total{knownsession=\"true\"}",
+              "legendFormat": "received",
+              "refId": "A"
+            },
+            {
+              "expr": "che_websocket_endpoint_sent_bytes_total{result=\"successful\"}",
+              "legendFormat": "sent",
+              "refId": "B"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "Bytes total",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 0,
+            "y": 200
+          },
+          "hiddenSeries": false,
+          "id": 117,
+          "interval": "",
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "increase(che_websocket_endpoint_close_messages_total{knownsession=\"true\"}[1m])",
+              "legendFormat": "{{reason}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "closed messages/minute - known session",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 6,
+            "y": 200
+          },
+          "hiddenSeries": false,
+          "id": 121,
+          "interval": "",
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "increase(che_websocket_endpoint_close_messages_total{knownsession=\"false\"}[1m])",
+              "legendFormat": "{{reason}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "closed messages/minute - unknown session",
+          "tooltip": {
+            "shared": true,
+            "sort": 2,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 12,
+            "y": 200
+          },
+          "hiddenSeries": false,
+          "id": 118,
+          "interval": "",
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "increase(che_websocket_endpoint_error_messages_total{knownsession=\"true\"}[1m])",
+              "legendFormat": "errors",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "errors/minute - known session",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "$datasource",
+          "description": "",
+          "fill": 1,
+          "fillGradient": 0,
+          "gridPos": {
+            "h": 6,
+            "w": 6,
+            "x": 18,
+            "y": 200
+          },
+          "hiddenSeries": false,
+          "id": 120,
+          "interval": "",
+          "legend": {
+            "avg": true,
+            "current": true,
+            "max": true,
+            "min": true,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "nullPointMode": "null",
+          "options": {
+            "dataLinks": []
+          },
+          "percentage": false,
+          "pointradius": 2,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "increase(che_websocket_endpoint_error_messages_total{knownsession=\"false\"}[1m])",
+              "legendFormat": "knownsession-{{knownsession}}",
+              "refId": "A"
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "errors/minute - unknown session",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "decimals": 0,
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": "0",
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "collapsed": true,
+          "datasource": "$datasource",
+          "gridPos": {
+            "h": 1,
+            "w": 24,
+            "x": 0,
+            "y": 206
           },
           "id": 42,
           "panels": [
@@ -9318,7 +10485,7 @@ data:
         }
       ],
       "refresh": "15m",
-      "schemaVersion": 19,
+      "schemaVersion": 21,
       "style": "dark",
       "tags": [],
       "templating": {
@@ -9372,3 +10539,4 @@ data:
       "uid": "sL0Klq_mz",
       "version": 1
     }
+    

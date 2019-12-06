@@ -44,18 +44,21 @@ public abstract class BasicWebSocketEndpoint {
   private final MessagesReSender reSender;
   private final WebSocketMessageReceiver receiver;
   private final WebsocketIdService identificationService;
+  private final WebSocketEndpointStatistic endpointStatistic;
   private final Map<Session, StringBuffer> sessionMessagesBuffer = new ConcurrentHashMap<>();
 
   public BasicWebSocketEndpoint(
       WebSocketSessionRegistry registry,
       MessagesReSender reSender,
       WebSocketMessageReceiver receiver,
-      WebsocketIdService identificationService) {
+      WebsocketIdService identificationService,
+      WebSocketEndpointStatistic endpointStatistic) {
 
     this.registry = registry;
     this.reSender = reSender;
     this.receiver = receiver;
     this.identificationService = identificationService;
+    this.endpointStatistic = endpointStatistic;
   }
 
   @OnOpen
@@ -70,6 +73,7 @@ public abstract class BasicWebSocketEndpoint {
     registry.add(combinedEndpointId, session);
     reSender.resend(combinedEndpointId);
     sessionMessagesBuffer.put(session, new StringBuffer());
+    endpointStatistic.sessionOpened();
   }
 
   @OnMessage
@@ -109,6 +113,7 @@ public abstract class BasicWebSocketEndpoint {
       LOG.warn("Processing messing within unidentified session");
     }
     receiver.receive(combinedEndpointId, message);
+    endpointStatistic.messageReceived(message.getBytes().length, endpointIdOptional.isPresent());
   }
 
   @OnClose
@@ -125,8 +130,10 @@ public abstract class BasicWebSocketEndpoint {
 
       registry.remove(combinedEndpointId);
       sessionMessagesBuffer.remove(session);
+      endpointStatistic.sessionClosed(closeReason, true);
     } else {
       LOG.warn("Closing unidentified session");
+      endpointStatistic.sessionClosed(closeReason, false);
     }
   }
 
@@ -141,10 +148,12 @@ public abstract class BasicWebSocketEndpoint {
       LOG.debug("Web socket session error");
       LOG.debug("Endpoint: {}", combinedEndpointId);
       LOG.debug("Error: {}", t);
+      endpointStatistic.errorReceived(true);
     } else {
       LOG.warn("Web socket session error");
       LOG.debug("Unidentified session");
       LOG.debug("Error: {}", t);
+      endpointStatistic.errorReceived(false);
     }
   }
 

@@ -93,6 +93,14 @@ public class MessagesReSender {
     }
   }
 
+  public long getDelayedReceiversNumber() {
+    return delayedMessageRegistry.size();
+  }
+
+  public long getLongestQueueSize() {
+    return delayedMessageRegistry.values().stream().mapToInt(Queue::size).max().orElse(0);
+  }
+
   private static class DelayedMessage {
 
     private final long timeMillis;

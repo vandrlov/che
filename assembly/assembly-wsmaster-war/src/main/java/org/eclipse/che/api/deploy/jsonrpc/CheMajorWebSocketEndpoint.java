@@ -17,6 +17,7 @@ import org.eclipse.che.api.core.websocket.commons.WebSocketMessageReceiver;
 import org.eclipse.che.api.core.websocket.impl.BasicWebSocketEndpoint;
 import org.eclipse.che.api.core.websocket.impl.GuiceInjectorEndpointConfigurator;
 import org.eclipse.che.api.core.websocket.impl.MessagesReSender;
+import org.eclipse.che.api.core.websocket.impl.WebSocketEndpointStatistic;
 import org.eclipse.che.api.core.websocket.impl.WebSocketSessionRegistry;
 import org.eclipse.che.api.core.websocket.impl.WebsocketIdService;
 
@@ -34,8 +35,9 @@ public class CheMajorWebSocketEndpoint extends BasicWebSocketEndpoint {
       WebSocketSessionRegistry registry,
       MessagesReSender reSender,
       WebSocketMessageReceiver receiver,
-      WebsocketIdService websocketIdService) {
-    super(registry, reSender, receiver, websocketIdService);
+      WebsocketIdService websocketIdService,
+      WebSocketEndpointStatistic endpointStatistic) {
+    super(registry, reSender, receiver, websocketIdService, endpointStatistic);
   }
 
   @Override

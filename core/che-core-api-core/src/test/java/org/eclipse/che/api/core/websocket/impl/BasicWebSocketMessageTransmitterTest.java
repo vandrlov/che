@@ -42,6 +42,7 @@ public class BasicWebSocketMessageTransmitterTest {
 
   @Mock private WebSocketSessionRegistry registry;
   @Mock private MessagesReSender reSender;
+  @Mock private WebSocketEndpointStatistic endpointStatistic;
   @InjectMocks private BasicWebSocketMessageTransmitter transmitter;
 
   @Mock private Session session;

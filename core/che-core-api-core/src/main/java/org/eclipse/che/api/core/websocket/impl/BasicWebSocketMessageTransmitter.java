@@ -34,12 +34,16 @@ public class BasicWebSocketMessageTransmitter implements WebSocketMessageTransmi
 
   private final WebSocketSessionRegistry registry;
   private final MessagesReSender reSender;
+  private final WebSocketEndpointStatistic endpointStatistic;
 
   @Inject
   public BasicWebSocketMessageTransmitter(
-      WebSocketSessionRegistry registry, MessagesReSender reSender) {
+      WebSocketSessionRegistry registry,
+      MessagesReSender reSender,
+      WebSocketEndpointStatistic endpointStatistic) {
     this.registry = registry;
     this.reSender = reSender;
+    this.endpointStatistic = endpointStatistic;
   }
 
   @Override
@@ -56,10 +60,11 @@ public class BasicWebSocketMessageTransmitter implements WebSocketMessageTransmi
       reSender.add(endpointId, message);
     } else {
       LOG.debug("Session registered and open, sending message");
-
       try {
         sessionOptional.get().getBasicRemote().sendText(message);
+        endpointStatistic.messageSent(message.getBytes().length, true);
       } catch (IOException e) {
+        endpointStatistic.messageSent(message.getBytes().length, false);
         LOG.error("Error while trying to send a message to a basic websocket remote endpoint", e);
       }
     }

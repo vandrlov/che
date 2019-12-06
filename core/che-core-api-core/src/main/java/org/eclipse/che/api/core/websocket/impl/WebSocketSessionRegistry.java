@@ -75,4 +75,12 @@ public class WebSocketSessionRegistry {
   public Set<Session> getSessions() {
     return new HashSet<>(sessionsMap.values());
   }
+
+  public long getTotalSessions() {
+    return sessionsMap.size();
+  }
+
+  public long getActiveSessions() {
+    return sessionsMap.values().stream().filter(s -> s.isOpen()).count();
+  }
 }
