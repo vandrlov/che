@@ -29,7 +29,6 @@ const CLASSES = {
     TopMenu: 'TopMenu',
     QuickOpenContainer: 'QuickOpenContainer',
     PreviewWidget: 'PreviewWidget',
-    GitHubPlugin: 'GitHubPlugin',
     RightToolbar: 'RightToolbar',
     Terminal: 'Terminal',
     DebugView: 'DebugView',
@@ -40,7 +39,11 @@ const CLASSES = {
     OpenWorkspaceWidget: 'OpenWorkspaceWidget',
     ContextMenu: 'ContextMenu',
     CheLoginPage: 'CheLoginPage',
-    TestWorkspaceUtil: 'TestWorkspaceUtil'
+    TestWorkspaceUtil: 'TestWorkspaceUtil',
+    GitHubUtils: 'GitHubUtils',
+    KeyCloakUtils: 'KeyCloakUtils',
+    CheVCSApi: 'CheVCSApi',
+    GitPlugin: 'GitPlugin'
 };
 
 export { TYPES, CLASSES };

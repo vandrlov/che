@@ -27,7 +27,7 @@ import { Editor } from '../pageobjects/ide/Editor';
 import { TopMenu } from '../pageobjects/ide/TopMenu';
 import { QuickOpenContainer } from '../pageobjects/ide/QuickOpenContainer';
 import { PreviewWidget } from '../pageobjects/ide/PreviewWidget';
-import { GitHubPlugin } from '../pageobjects/ide/GitHubPlugin';
+import { GitPlugin } from '../pageobjects/ide/GitPlugin';
 import { RightToolbar } from '../pageobjects/ide/RightToolbar';
 import { Terminal } from '../pageobjects/ide/Terminal';
 import { DebugView } from '../pageobjects/ide/DebugView';
@@ -39,7 +39,11 @@ import { OcpLoginPage } from '../pageobjects/openshift/OcpLoginPage';
 import { OcpWebConsolePage } from '../pageobjects/openshift/OcpWebConsolePage';
 import { OcpLoginByTempAdmin } from '../pageobjects/login/OcpLoginByTempAdmin';
 import { OpenWorkspaceWidget } from '../pageobjects/ide/OpenWorkspaceWidget';
+import { CheGitApi } from '../utils/VCS/CheGitApi';
+import { GitHubUtils } from '../utils/VCS/github/GitHubUtils';
 import { ContextMenu } from '../pageobjects/ide/ContextMenu';
+
+import {KeyCloakUtils} from '../utils/keycloak/KeyCloakUtils';
 import { ITestWorkspaceUtil } from '..';
 import { CheLoginPage } from '../pageobjects/openshift/CheLoginPage';
 import { RegularUserOcpCheLoginPage } from '../pageobjects/login/RegularUserOcpCheLoginPage';
@@ -74,7 +78,7 @@ export function getContainer(): Container {
     e2eContainer.bind<TopMenu>(CLASSES.TopMenu).to(TopMenu).inSingletonScope();
     e2eContainer.bind<QuickOpenContainer>(CLASSES.QuickOpenContainer).to(QuickOpenContainer).inSingletonScope();
     e2eContainer.bind<PreviewWidget>(CLASSES.PreviewWidget).to(PreviewWidget).inSingletonScope();
-    e2eContainer.bind<GitHubPlugin>(CLASSES.GitHubPlugin).to(GitHubPlugin).inSingletonScope();
+    e2eContainer.bind<GitPlugin>(CLASSES.GitPlugin).to(GitPlugin).inSingletonScope();
     e2eContainer.bind<RightToolbar>(CLASSES.RightToolbar).to(RightToolbar).inSingletonScope();
     e2eContainer.bind<Terminal>(CLASSES.Terminal).to(Terminal).inSingletonScope();
     e2eContainer.bind<DebugView>(CLASSES.DebugView).to(DebugView).inSingletonScope();
@@ -83,6 +87,9 @@ export function getContainer(): Container {
     e2eContainer.bind<OcpLoginPage>(CLASSES.OcpLoginPage).to(OcpLoginPage).inSingletonScope();
     e2eContainer.bind<OcpWebConsolePage>(CLASSES.OcpWebConsolePage).to(OcpWebConsolePage).inSingletonScope();
     e2eContainer.bind<OpenWorkspaceWidget>(CLASSES.OpenWorkspaceWidget).to(OpenWorkspaceWidget).inSingletonScope();
+    e2eContainer.bind<GitHubUtils>(CLASSES.GitHubUtils).to(GitHubUtils).inSingletonScope();
+    e2eContainer.bind<KeyCloakUtils>(CLASSES.KeyCloakUtils).to(KeyCloakUtils).inSingletonScope();
+    e2eContainer.bind<CheGitApi>(CLASSES.CheVCSApi).to(CheGitApi).inSingletonScope();
     e2eContainer.bind<CheLoginPage>(CLASSES.CheLoginPage).to(CheLoginPage).inSingletonScope();
     return e2eContainer;
 }

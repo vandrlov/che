@@ -238,5 +238,10 @@ export const TestConstants = {
     /**
      * Running test suite - possible variants can be found in package.json scripts part.
      */
-    TEST_SUITE: process.env.TEST_SUITE || 'test-happy-path'
+    TEST_SUITE: process.env.TEST_SUITE || 'test-happy-path',
+
+    /**
+     * The github Personal acccess token
+     */
+    TS_GITHUB_PERSONAL_ACCESS_TOKEN: process.env.TS_GITHUB_PERSONAL_ACCESS_TOKEN || ''
 };

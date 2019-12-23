@@ -8,6 +8,8 @@
  * SPDX-License-Identifier: EPL-2.0
  **********************************************************************/
 
+import axios from 'axios';
+import { che } from '@eclipse-che/api';
 import { TestConstants } from '../../TestConstants';
 import { injectable, inject } from 'inversify';
 import { DriverHelper } from '../DriverHelper';
@@ -15,9 +17,9 @@ import { CLASSES } from '../../inversify.types';
 import 'reflect-metadata';
 import { WorkspaceStatus } from './WorkspaceStatus';
 import { ITestWorkspaceUtil } from './ITestWorkspaceUtil';
-import axios from 'axios';
-import querystring from 'querystring';
 import { error } from 'selenium-webdriver';
+import { KeyCloakUtils } from '../keycloak/KeyCloakUtils';
+
 enum RequestType {
     GET,
     POST,
@@ -27,14 +29,14 @@ enum RequestType {
 @injectable()
 export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
-    workspaceApiUrl: string = `${TestConstants.TS_SELENIUM_BASE_URL}/api/workspace`;
+    static readonly WORKSPACE_API_URL: string = `${TestConstants.TS_SELENIUM_BASE_URL}/api/workspace`;
 
-    constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper) {
+    constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper, @inject(CLASSES.KeyCloakUtils) private readonly keyCloackUtil: KeyCloakUtils) {
 
     }
 
     public async waitWorkspaceStatus(namespace: string, workspaceName: string, expectedWorkspaceStatus: WorkspaceStatus) {
-        const workspaceStatusApiUrl: string = `${this.workspaceApiUrl}/${namespace}:${workspaceName}`;
+        const workspaceStatusApiUrl: string = `${TestWorkspaceUtil.WORKSPACE_API_URL}/${namespace}:${workspaceName}`;
         const attempts: number = TestConstants.TS_SELENIUM_WORKSPACE_STATUS_ATTEMPTS;
         const polling: number = TestConstants.TS_SELENIUM_WORKSPACE_STATUS_POLLING;
         let workspaceStatus: string = '';
@@ -60,7 +62,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
     }
 
     public async waitPluginAdding(namespace: string, workspaceName: string, pluginName: string) {
-        const workspaceStatusApiUrl: string = `${this.workspaceApiUrl}/${namespace}:${workspaceName}`;
+        const workspaceStatusApiUrl: string = `${TestWorkspaceUtil.WORKSPACE_API_URL}/${namespace}:${workspaceName}`;
         const attempts: number = TestConstants.TS_SELENIUM_PLUGIN_PRECENCE_ATTEMPTS;
         const polling: number = TestConstants.TS_SELENIUM_PLUGIN_PRECENCE_POLLING;
 
@@ -88,7 +90,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
     }
 
     public async getListOfWorkspaceId() {
-        const getAllWorkspacesResponse = await this.processRequest(RequestType.GET, this.workspaceApiUrl);
+        const getAllWorkspacesResponse = await this.processRequest(RequestType.GET, TestWorkspaceUtil.WORKSPACE_API_URL);
 
         interface IMyObj {
             id: string;
@@ -105,7 +107,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
     public async getIdOfRunningWorkspaces(): Promise<Array<string>> {
         try {
-            const getAllWorkspacesResponse = await this.processRequest(RequestType.GET, this.workspaceApiUrl);
+            const getAllWorkspacesResponse = await this.processRequest(RequestType.GET, TestWorkspaceUtil.WORKSPACE_API_URL);
 
             interface IMyObj {
                 id: string;
@@ -123,7 +125,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
             return idOfRunningWorkspace;
         } catch (err) {
-            console.log(`Getting id of running workspaces failed. URL used: ${this.workspaceApiUrl}`);
+            console.log(`Getting id of running workspaces failed. URL used: ${TestWorkspaceUtil.WORKSPACE_API_URL}`);
             throw err;
         }
     }
@@ -133,7 +135,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
     }
 
     public async removeWorkspaceById(id: string) {
-        const workspaceIdUrl: string = `${this.workspaceApiUrl}/${id}`;
+        const workspaceIdUrl: string = `${TestWorkspaceUtil.WORKSPACE_API_URL}/${id}`;
         const attempts: number = TestConstants.TS_SELENIUM_PLUGIN_PRECENCE_ATTEMPTS;
         const polling: number = TestConstants.TS_SELENIUM_PLUGIN_PRECENCE_POLLING;
         let stopped: Boolean = false;
@@ -167,41 +169,11 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
     }
 
     async getCheBearerToken(): Promise<string> {
-        let params = {};
-
-        let keycloakUrl = TestConstants.TS_SELENIUM_BASE_URL;
-        if ( keycloakUrl.substr(7, 4).includes('che')) {
-            const keycloakAuthSuffix = '/auth/realms/che/protocol/openid-connect/token';
-            keycloakUrl = keycloakUrl.replace('che', 'keycloak') + keycloakAuthSuffix;
-            params = {
-                client_id: 'che-public',
-                username: TestConstants.TS_SELENIUM_USERNAME,
-                password: TestConstants.TS_SELENIUM_PASSWORD,
-                grant_type: 'password'
-            };
-        } else {
-            const keycloakAuthSuffix = '/auth/realms/codeready/protocol/openid-connect/token';
-            keycloakUrl = keycloakUrl.replace('codeready', 'keycloak') + keycloakAuthSuffix;
-            params = {
-                client_id: 'codeready-public',
-                username: TestConstants.TS_SELENIUM_USERNAME,
-                password: TestConstants.TS_SELENIUM_PASSWORD,
-                grant_type: 'password'
-            };
-        }
-
-        try {
-            const responseToObtainBearerToken = await axios.post(keycloakUrl, querystring.stringify(params));
-            return responseToObtainBearerToken.data.access_token;
-        } catch (err) {
-            console.log(`Can not get bearer token. URL used: ${keycloakUrl}`);
-            throw err;
-        }
-
+        return this.keyCloackUtil.getBearerToken();
     }
 
     public async stopWorkspaceById(id: string) {
-        const stopWorkspaceApiUrl: string = `${this.workspaceApiUrl}/${id}/runtime`;
+        const stopWorkspaceApiUrl: string = `${TestWorkspaceUtil.WORKSPACE_API_URL}/${id}/runtime`;
         try {
             const stopWorkspaceResponse = await this.processRequest(RequestType.DELETE, stopWorkspaceApiUrl);
 
@@ -209,10 +181,19 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
             if (stopWorkspaceResponse.status !== 204) {
                 throw new Error(`Can not stop workspace. Code: ${stopWorkspaceResponse.status} Data: ${stopWorkspaceResponse.data}`);
             }
+            for (let i = 0; i < TestConstants.TS_SELENIUM_PLUGIN_PRECENCE_ATTEMPTS; i++) {
+                if (stopWorkspaceResponse.data.status === 'STOPPED') {
+                    break;
+                } else {
+                    await this.driverHelper.wait(TestConstants.TS_SELENIUM_PLUGIN_PRECENCE_POLLING);
+                }
+            }
         } catch (err) {
             console.log(`Stopping workspace failed. URL used: ${stopWorkspaceApiUrl}`);
             throw err;
         }
+
+
 
     }
 
@@ -230,20 +211,14 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
     }
 
-    removeWorkspace(namespace: string, workspaceId: string): void {
-        throw new Error('Method not implemented.');
-    }
-
-    stopWorkspace(namespace: string, workspaceId: string): void {
-        throw new Error('Method not implemented.');
-    }
 
     async processRequest(reqType: RequestType, url: string) {
         let response;
         // maybe this check can be moved somewhere else at the begining so it will be executed just once
         if (TestConstants.TS_SELENIUM_MULTIUSER === true) {
             let authorization = 'Authorization';
-            axios.defaults.headers.common[authorization] = 'Bearer ' + await this.getCheBearerToken();
+
+            axios.defaults.headers.common[authorization] = await this.getCheBearerToken();
         }
         switch (reqType) {
             case RequestType.GET: {
@@ -259,6 +234,25 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
             }
         }
         return response;
+    }
+
+    async createWsFromDevFile(customTemplate: che.workspace.devfile.Devfile) {
+        try {
+            axios.defaults.headers.common['Authorization'] = await this.getCheBearerToken();
+            await axios.post(TestWorkspaceUtil.WORKSPACE_API_URL + '/devfile', customTemplate);
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }
+    async getBaseDevfile(): Promise<che.workspace.devfile.Devfile> {
+        const baseDevfile: che.workspace.devfile.Devfile = {
+            apiVersion: '1.0.0',
+            metadata: {
+                name: 'test-workspace'
+            }
+        };
+        return baseDevfile;
     }
 
 }
