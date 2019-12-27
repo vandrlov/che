@@ -241,7 +241,10 @@ export const TestConstants = {
     TEST_SUITE: process.env.TEST_SUITE || 'test-happy-path',
 
     /**
-     * The github Personal acccess token
+     * The repo (with README.md in root) and access token are needed for to run test-git-ssh
      */
-    TS_GITHUB_PERSONAL_ACCESS_TOKEN: process.env.TS_GITHUB_PERSONAL_ACCESS_TOKEN || ''
+    TS_GITHUB_TEST_REPO_PATH: process.env.TS_GITHUB_TEST_REPO_PATH || '',
+
+    TS_GITHUB_TEST_REPO_ACCESS_TOKEN: process.env.TS_GITHUB_TEST_REPO_ACCESS_TOKEN || ''
+
 };
