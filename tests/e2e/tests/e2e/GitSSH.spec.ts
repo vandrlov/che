@@ -57,8 +57,6 @@ suite('Git with ssh workflow', async () => {
         await testWorkspaceUtils.createWsFromDevFile(wsConfig);
     });
 
-    suiteTeardown(async function () { await testWorkspaceUtils.cleanUpAllWorkspaces(); });
-
     test('Login into workspace and open tree container', async () => {
         await driverHelper.navigateToUrl(workspacePrefixUrl + wsNameCheckGeneratingKeys);
         await loginPage.login();
@@ -96,7 +94,7 @@ suite('Git with ssh workflow', async () => {
         await gitPlugin.commitFromScmView();
         await gitPlugin.selectCommandInMoreActionsMenu('Push');
         await gitPlugin.waitDataIsSynchronized();
-        const rawDataFromFile: string = await gitHubUtils.getRawContentFromFile(TestConstants.TS_GITHUB_TEST_REPO_PATH + committedFile);
+        const rawDataFromFile: string = await gitHubUtils.getRawContentFromFile(TestConstants.TS_GITHUB_TEST_REPO + '/master/' + committedFile);
         assert.isTrue(rawDataFromFile.includes(currentDate));
         await testWorkspaceUtils.cleanUpAllWorkspaces();
     });
@@ -115,17 +113,20 @@ suite('Git with ssh workflow', async () => {
 
 });
 
-
-
+suite('Cleanup', async () => {
+    test('Remove test workspace', async () => {
+        await testWorkspaceUtils.cleanUpAllWorkspaces();
+    });
+});
 
 async function cloneTestRepo() {
-    const sshLinkToGistRepo: string = 'git@github.com:maxura/Spoon-Knife.git';
+    const sshLinkToRepo: string = 'git@github.com:' + TestConstants.TS_GITHUB_TEST_REPO + '.git';
     const confirmMessage = 'Repository URL (Press \'Enter\' to confirm your input or \'Escape\' to cancel)';
 
 
     await topMenu.selectOption('View', 'Find Command...');
     await quickOpenContainer.typeAndSelectSuggestion('clone', 'Git: Clone');
-    await quickOpenContainer.typeAndSelectSuggestion(sshLinkToGistRepo, confirmMessage);
+    await quickOpenContainer.typeAndSelectSuggestion(sshLinkToRepo, confirmMessage);
     await openWorkspaceWidget.selectRootWorkspaceItemInDropDawn('/');
     await openWorkspaceWidget.selectItemInTreeAndOpenWorkspace('/projects');
 }

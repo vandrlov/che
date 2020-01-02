@@ -243,7 +243,7 @@ export const TestConstants = {
     /**
      * The repo (with README.md in root) and access token are needed for to run test-git-ssh
      */
-    TS_GITHUB_TEST_REPO_PATH: process.env.TS_GITHUB_TEST_REPO_PATH || '',
+    TS_GITHUB_TEST_REPO: process.env.TS_GITHUB_TEST_REPO || '',
 
     TS_GITHUB_TEST_REPO_ACCESS_TOKEN: process.env.TS_GITHUB_TEST_REPO_ACCESS_TOKEN || ''
 
