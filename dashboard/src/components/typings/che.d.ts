@@ -131,6 +131,13 @@ declare namespace che {
       fetchDevfileSchema(): ng.IPromise<any>;
     }
 
+    export interface ICheKubernetesNamespace {
+      fetchKubernetesNamespace(): ng.IPromise<IKubernetesNamespace[]>;
+      isPlaceholder(namespace: che.IKubernetesNamespace): boolean;
+      containsPlaceholder(): boolean;
+      getHintDescription(): string;
+    }
+
   }
 
   export namespace resource {
@@ -165,16 +172,6 @@ declare namespace che {
       TEAM_MEMBER: any;
       TEAM_ADMIN: any;
       getValues(): any[];
-    }
-
-    export interface ICheRecipeTypes {
-      DOCKERFILE: string;
-      DOCKERIMAGE: string;
-      COMPOSE: string;
-      KUBERNETES: string;
-      OPENSHIFT: string;
-      NOENVIRONMENT: string;
-      getValues(): Array<string>;
     }
 
     export interface ICheMachineSourceTypes {
@@ -321,6 +318,7 @@ declare namespace che {
     factoryId?: string;
     factoryurl?: string;
     errorMessage?: string;
+    infrastructureNamespace: string;
     [propName: string]: string | number;
   }
 
@@ -328,7 +326,7 @@ declare namespace che {
     name?: string;
     defaultEnv?: string;
     environments: {
-      [envName: string]: IWorkspaceEnvironment
+      [envName: string]: any;
     };
     projects?: Array <any>;
     commands?: Array <any>;
@@ -348,50 +346,9 @@ declare namespace che {
     commands?: Array <any>;
     attributes?: che.IWorkspaceConfigAttributes;
     metadata: {
-      name: string
+      name?: string;
+      generateName?: string;
     }
-  }
-
-  export interface IWorkspaceEnvironment {
-    machines: {
-      [machineName: string]: IEnvironmentMachine
-    };
-    recipe: IRecipe;
-  }
-
-  export interface IRecipe {
-    id?: string;
-    content?: string;
-    location?: string;
-    contentType?: string;
-    type: string;
-  }
-
-  export interface IEnvironmentMachine {
-    installers?: string[];
-    attributes?: {
-      memoryLimitBytes?: string|number;
-      source?: string;
-      [attrName: string]: string|number;
-    };
-    servers?: {
-      [serverRef: string]: IEnvironmentMachineServer
-    };
-    volumes?: {
-      [volumeRef: string]: IEnvironmentMachineVolume
-    };
-    env?: {[envName: string]: string};
-  }
-
-  export interface IEnvironmentMachineServer {
-    port: string|number;
-    protocol: string;
-    path?: string;
-    properties?: any;
-  }
-
-  export interface IEnvironmentMachineVolume {
-    path: string;
   }
 
   export interface IWorkspaceRuntime {
@@ -422,17 +379,6 @@ declare namespace che {
     ref: string;
     protocol: string;
     path: string;
-  }
-
-  export interface IAgent {
-    id: string;
-    name: string;
-    version: string;
-    description: string;
-    properties: any;
-    script: string;
-    servers: { [serverName: string]: IEnvironmentMachineServer };
-    dependencies: string[];
   }
 
   export interface IProjectSource {
@@ -608,4 +554,14 @@ declare namespace che {
     name?: string;
     isPending?: boolean;
   }
+
+  export interface IKubernetesNamespace {
+    name: string;
+    attributes: {
+      default?: boolean;
+      displayName?: string;
+      phase: string;
+    };
+  }
+
 }
