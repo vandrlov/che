@@ -2,6 +2,8 @@ import { injectable, inject } from 'inversify';
 import 'reflect-metadata';
 import { CLASSES } from '../inversify.types';
 import { RequestHandler } from './RequestHandler';
+import { RequestType } from './RequestType';
+import { TestConstants } from '../TestConstants';
 
 
 @injectable()
@@ -19,16 +21,15 @@ export class PreferencesHandler {
             await this.setToDom();
         }
 
-        this.requestHandler.ttt();
     }
 
     private async isSetToDom(): Promise<boolean> {
-        //    // let requestHandler: RequestHandler = e2eContainer.get(CLASSES.RequestHandler);
-        //    const response = await this.requestHandler.processRequest(RequestType.GET, `${TestConstants.TS_SELENIUM_BASE_URL}/api/preferences`);
-        //    let responseString = JSON.stringify(response.data);
-        //    if ( responseString.includes('"terminal.integrated.rendererType":"dom"') ) {
-        //          return true;
-        //     }
+        // let requestHandler: RequestHandler = e2eContainer.get(CLASSES.RequestHandler);
+        const response = await this.requestHandler.processRequest(RequestType.GET, `${TestConstants.TS_SELENIUM_BASE_URL}/api/preferences`);
+        let responseString = JSON.stringify(response.data);
+        if (responseString.includes('"terminal.integrated.rendererType":"dom"')) {
+            return true;
+        }
         return false;
     }
 
