@@ -44,6 +44,8 @@ import { OcpLoginPage } from './pageobjects/openshift/OcpLoginPage';
 import { OcpWebConsolePage } from './pageobjects/openshift/OcpWebConsolePage';
 import { OpenWorkspaceWidget } from './pageobjects/ide/OpenWorkspaceWidget';
 import { CheLoginPage } from './pageobjects/openshift/CheLoginPage';
+import { PreferencesHandler } from './utils/PreferencesHandler';
+import { RequestHandler } from './utils/RequestHandler';
 
 
 const e2eContainer: Container = new Container();
@@ -86,6 +88,10 @@ e2eContainer.bind<OcpLoginPage>(CLASSES.OcpLoginPage).to(OcpLoginPage).inSinglet
 e2eContainer.bind<OcpWebConsolePage>(CLASSES.OcpWebConsolePage).to(OcpWebConsolePage).inSingletonScope();
 e2eContainer.bind<OpenWorkspaceWidget>(CLASSES.OpenWorkspaceWidget).to(OpenWorkspaceWidget).inSingletonScope();
 e2eContainer.bind<CheLoginPage>(CLASSES.CheLoginPage).to(CheLoginPage).inSingletonScope();
+e2eContainer.bind<RequestHandler>(CLASSES.RequestHandler).to(RequestHandler).inSingletonScope();
+
+e2eContainer.bind<PreferencesHandler>(CLASSES.PreferencesHandler).to(PreferencesHandler).inSingletonScope();
+
 
 
 export { e2eContainer };

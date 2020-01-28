@@ -8,6 +8,8 @@ export * from './driver/IDriver';
 export * from './utils/DriverHelper';
 export * from './utils/Logger';
 export * from './utils/NameGenerator';
+export * from './utils/PreferencesHandler';
+export * from './utils/RequestHandler';
 export * from './utils/ScreenCatcher';
 export * from './utils/workspace/ITestWorkspaceUtil';
 export * from './utils/workspace/TestWorkspaceUtil';
