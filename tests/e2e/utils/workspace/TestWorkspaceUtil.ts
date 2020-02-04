@@ -29,6 +29,8 @@ enum RequestType {
 @injectable()
 export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
+    private static readonly AUTHORIZATION = 'Authorization';
+
     static readonly WORKSPACE_API_URL: string = `${TestConstants.TS_SELENIUM_BASE_URL}/api/workspace`;
 
     constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper, @inject(CLASSES.KeyCloakUtils) private readonly keyCloackUtil: KeyCloakUtils) {
@@ -214,14 +216,11 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
     }
 
-
     async processRequest(reqType: RequestType, url: string) {
         let response;
         // maybe this check can be moved somewhere else at the begining so it will be executed just once
         if (TestConstants.TS_SELENIUM_MULTIUSER === true) {
-            let authorization = 'Authorization';
-
-            axios.defaults.headers.common[authorization] = await this.getCheBearerToken();
+            axios.defaults.headers.common[AUTHORIZATION] = await this.getCheBearerToken();
         }
         switch (reqType) {
             case RequestType.GET: {
@@ -241,7 +240,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
     async createWsFromDevFile(customTemplate: che.workspace.devfile.Devfile) {
         try {
-            axios.defaults.headers.common['Authorization'] = await this.getCheBearerToken();
+            axios.defaults.headers.common[AUTHORIZATION] = await this.getCheBearerToken();
             await axios.post(TestWorkspaceUtil.WORKSPACE_API_URL + '/devfile', customTemplate);
         } catch (error) {
             console.error(error);

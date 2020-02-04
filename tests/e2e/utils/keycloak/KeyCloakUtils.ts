@@ -3,6 +3,7 @@ import axios from 'axios';
 import { TestConstants } from '../../TestConstants';
 import querystring from 'querystring';
 import { ThenableWebDriver } from 'selenium-webdriver';
+
 @injectable()
 export class KeyCloakUtils {
 
@@ -12,15 +13,19 @@ export class KeyCloakUtils {
     async getBearerToken(): Promise<string> {
         let keycloakUrl = '';
         try {
+            const cheKeycloakTokenEndpoint = "che.keycloak.token.endpoint";
             const keycloakEndpoint = await axios.get(TestConstants.TS_SELENIUM_BASE_URL + '/api/keycloak/settings');
-            keycloakUrl = keycloakEndpoint.data['che.keycloak.token.endpoint'];
-            const keycloakClientId = keycloakEndpoint.data['che.keycloak.client_id'];
+            keycloakUrl = keycloakEndpoint.data[cheKeycloakTokenEndpoint];
+
+            const cheKeycloakClientId = "che.keycloak.client_id";
+            const keycloakClientId = keycloakEndpoint.data[cheKeycloakClientId];
             const params = {
                 client_id: keycloakClientId,
                 password: TestConstants.TS_SELENIUM_USERNAME,
                 username: TestConstants.TS_SELENIUM_PASSWORD,
                 grant_type: 'password'
             };
+
             const responseToObtainedBearerToken = await axios.post(keycloakUrl, querystring.stringify(params));
             return TestConstants.TS_SELENIUM_MULTIUSER ? 'Bearer ' + responseToObtainedBearerToken.data.access_token : 'dummy_token';
         } catch (error) {

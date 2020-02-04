@@ -24,12 +24,14 @@ export class GitHubUtils {
   async getRawContentFromFile(pathToFile: string): Promise<string> {
     const gitHubContentEntryPointUrl: string = 'https://raw.githubusercontent.com/';
     const pathToRawContent: string = `${gitHubContentEntryPointUrl}${pathToFile}`;
+    const authorization: string = 'Authorization';
+    const contentType: string = 'Content-Type'
 
     try {
-      delete axios.defaults.headers.common['Authorization'];
-      delete axios.defaults.headers.common['Content-Type'];
-      const responce = await axios.get(`${gitHubContentEntryPointUrl}${pathToFile}`);
-      return responce.data;
+      delete axios.defaults.headers.common[authorization];
+      delete axios.defaults.headers.common[contentType];
+      const response = await axios.get(`${gitHubContentEntryPointUrl}${pathToFile}`);
+      return response.data;
     } catch (error) {
       console.error('Cannot get content form the raw github content: ' + pathToRawContent);
       console.error(error);
