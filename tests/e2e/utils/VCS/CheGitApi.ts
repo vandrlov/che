@@ -1,14 +1,14 @@
 import { injectable, inject } from 'inversify';
 import { TestConstants } from '../../TestConstants';
 import { CLASSES } from '../../inversify.types';
-import { KeyCloakUtils } from '../../utils/keycloak/KeyCloakUtils';
+import { KeyCloakUtil } from '../../utils/keycloak/KeyCloakUtil';
 import axios from 'axios';
 
 @injectable()
 export class CheGitApi {
   static readonly GIT_API_ENTRIPOINT_URL = TestConstants.TS_SELENIUM_BASE_URL + '/api/ssh/vcs';
 
-  constructor(@inject(CLASSES.KeyCloakUtils) private readonly keyCloak: KeyCloakUtils) { }
+  constructor(@inject(CLASSES.KeyCloakUtil) private readonly keyCloak: KeyCloakUtil) { }
 
 
 

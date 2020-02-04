@@ -24,8 +24,8 @@ export class GitPlugin {
     async openGitPluginContainer(timeout: number = TestConstants.TS_SELENIUM_DEFAULT_TIMEOUT) {
         Logger.debug('GitPlugin.openGitPluginContainer');
 
-        const sourceCountrolGitBtn: string = '//li[@id=\'shell-tab-scm-view-container\' and @style[contains(.,\'height\')]]';
-        await this.driverHelper.waitAndClick(By.xpath(sourceCountrolGitBtn), timeout);
+        const sourceControlGitBtn: string = '//li[@id=\'shell-tab-scm-view-container\' and contains(@style, \'height\')';
+        await this.driverHelper.waitAndClick(By.xpath(sourceControlGitBtn), timeout);
         this.waitViewOfContainer();
     }
 

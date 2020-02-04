@@ -5,7 +5,7 @@ import querystring from 'querystring';
 import { ThenableWebDriver } from 'selenium-webdriver';
 
 @injectable()
-export class KeyCloakUtils {
+export class KeyCloakUtil {
 
     /**
      * Get keycloak token with API

@@ -40,8 +40,8 @@ const CLASSES = {
     ContextMenu: 'ContextMenu',
     CheLoginPage: 'CheLoginPage',
     TestWorkspaceUtil: 'TestWorkspaceUtil',
-    GitHubUtils: 'GitHubUtils',
-    KeyCloakUtils: 'KeyCloakUtils',
+    GitHubUtil: 'GitHubUtil',
+    KeyCloakUtil: 'KeyCloakUtil',
     CheVCSApi: 'CheVCSApi',
     GitPlugin: 'GitPlugin'
     NotificationCenter: 'NotificationCenter'

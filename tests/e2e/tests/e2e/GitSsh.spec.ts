@@ -23,7 +23,7 @@ import { TestConstants } from '../../TestConstants';
 import { DriverHelper } from '../../utils/DriverHelper';
 import { NameGenerator } from '../../utils/NameGenerator';
 import { CheGitApi } from '../../utils/VCS/CheGitApi';
-import { GitHubUtils } from '../../utils/VCS/github/GitHubUtils';
+import { GitHubUtil } from '../../utils/VCS/github/GitHubUtil';
 import { TestWorkspaceUtil } from '../../utils/workspace/TestWorkspaceUtil';
 import { TopMenu } from '../../pageobjects/ide/TopMenu';
 
@@ -37,7 +37,7 @@ const namespace: string = TestConstants.TS_SELENIUM_USERNAME;
 const workspaceName: string = TestConstants.TS_SELENIUM_HAPPY_PATH_WORKSPACE_NAME;
 const topMenu: TopMenu = e2eContainer.get(CLASSES.TopMenu);
 const loginPage: ICheLoginPage = e2eContainer.get<ICheLoginPage>(TYPES.CheLogin);
-const gitHubUtils: GitHubUtils = e2eContainer.get<GitHubUtils>(CLASSES.GitHubUtils);
+const gitHubUtils: GitHubUtil = e2eContainer.get<GitHubUtil>(CLASSES.GitHubUtil);
 const cheGitAPI: CheGitApi = e2eContainer.get<CheGitApi>(CLASSES.CheVCSApi);
 const openWorkspaceWidget: OpenWorkspaceWidget = e2eContainer.get(CLASSES.OpenWorkspaceWidget);
 const projectTree: ProjectTree = e2eContainer.get(CLASSES.ProjectTree);

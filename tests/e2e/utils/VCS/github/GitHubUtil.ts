@@ -2,11 +2,11 @@ import { injectable } from 'inversify';
 import axios from 'axios';
 
 @injectable()
-export class GitHubUtils {
+export class GitHubUtil {
   private static readonly GITHUB_API_ENTRIPOINT_URL = 'https://api.github.com/';
 
   async addPublicSshKeyToUserAccount(authToken: string, title: string, key: string) {
-    const gitHubApiSshURL: string = GitHubUtils.GITHUB_API_ENTRIPOINT_URL + 'user/keys';
+    const gitHubApiSshURL: string = GitHubUtil.GITHUB_API_ENTRIPOINT_URL + 'user/keys';
     const authHeader = { headers: { 'Authorization': 'token ' + authToken, 'Content-Type': 'application/json' } };
 
     const data = {

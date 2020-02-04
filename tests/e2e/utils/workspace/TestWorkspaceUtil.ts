@@ -18,7 +18,7 @@ import 'reflect-metadata';
 import { WorkspaceStatus } from './WorkspaceStatus';
 import { ITestWorkspaceUtil } from './ITestWorkspaceUtil';
 import { error } from 'selenium-webdriver';
-import { KeyCloakUtils } from '../keycloak/KeyCloakUtils';
+import { KeyCloakUtil } from '../keycloak/KeyCloakUtil';
 
 enum RequestType {
     GET,
@@ -29,11 +29,10 @@ enum RequestType {
 @injectable()
 export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
+    static readonly WORKSPACE_API_URL: string = `${TestConstants.TS_SELENIUM_BASE_URL}/api/workspace`;
     private static readonly AUTHORIZATION = 'Authorization';
 
-    static readonly WORKSPACE_API_URL: string = `${TestConstants.TS_SELENIUM_BASE_URL}/api/workspace`;
-
-    constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper, @inject(CLASSES.KeyCloakUtils) private readonly keyCloackUtil: KeyCloakUtils) {
+    constructor(@inject(CLASSES.DriverHelper) private readonly driverHelper: DriverHelper, @inject(CLASSES.KeyCloakUtil) private readonly keyCloackUtil: KeyCloakUtil) {
 
     }
 
@@ -220,7 +219,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
         let response;
         // maybe this check can be moved somewhere else at the begining so it will be executed just once
         if (TestConstants.TS_SELENIUM_MULTIUSER === true) {
-            axios.defaults.headers.common[AUTHORIZATION] = await this.getCheBearerToken();
+            axios.defaults.headers.common[TestWorkspaceUtil.AUTHORIZATION] = await this.getCheBearerToken();
         }
         switch (reqType) {
             case RequestType.GET: {
@@ -240,7 +239,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
 
     async createWsFromDevFile(customTemplate: che.workspace.devfile.Devfile) {
         try {
-            axios.defaults.headers.common[AUTHORIZATION] = await this.getCheBearerToken();
+            axios.defaults.headers.common[TestWorkspaceUtil.AUTHORIZATION] = await this.getCheBearerToken();
             await axios.post(TestWorkspaceUtil.WORKSPACE_API_URL + '/devfile', customTemplate);
         } catch (error) {
             console.error(error);
