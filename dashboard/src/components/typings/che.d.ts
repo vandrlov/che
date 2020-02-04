@@ -15,6 +15,8 @@ declare module 'che' {
 
 declare namespace che {
 
+  export type ConfigurableMenuItem = 'administration' | 'factories' | 'getstarted' | 'organizations' | 'stacks';
+
   export interface IRootScopeService extends ng.IRootScopeService {
     hideLoader: boolean;
     showIDE: boolean;
@@ -304,10 +306,10 @@ declare namespace che {
   }
 
   export interface IWorkspaceSettings {
-    supportedRecipeTypes: string;
-    cheWorkspacePluginRegistryUrl: string;
     cheWorkspaceDevfileRegistryUrl?: string;
-    [propName: string]: string | boolean;
+    cheWorkspacePluginRegistryUrl: string;
+    'che.workspace.persist_volumes.default': 'false' | 'true';
+    supportedRecipeTypes: string;
   }
 
   export interface IWorkspaceAttributes {
@@ -334,7 +336,7 @@ declare namespace che {
   }
 
   export interface IWorkspaceConfigAttributes {
-    persistVolumes?: string;
+    persistVolumes?: 'false'; // explicitly indicates turning the ephemeral mode on
     editor?: string;
     plugins?: string;
   }

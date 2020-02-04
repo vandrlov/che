@@ -44,6 +44,7 @@ const CLASSES = {
     KeyCloakUtils: 'KeyCloakUtils',
     CheVCSApi: 'CheVCSApi',
     GitPlugin: 'GitPlugin'
+    NotificationCenter: 'NotificationCenter'
 };
 
 export { TYPES, CLASSES };
