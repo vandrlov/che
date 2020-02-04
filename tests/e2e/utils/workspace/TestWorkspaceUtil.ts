@@ -96,12 +96,15 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
             id: string;
             status: string;
         }
+
         let stringified = JSON.stringify(getAllWorkspacesResponse.data);
         let arrayOfWorkspaces = <IMyObj[]>JSON.parse(stringified);
         let wsList: Array<string> = [];
+
         for (let entry of arrayOfWorkspaces) {
             wsList.push(entry.id);
         }
+
         return wsList;
     }
 
@@ -245,6 +248,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
             throw error;
         }
     }
+
     async getBaseDevfile(): Promise<che.workspace.devfile.Devfile> {
         const baseDevfile: che.workspace.devfile.Devfile = {
             apiVersion: '1.0.0',
@@ -252,6 +256,7 @@ export class TestWorkspaceUtil implements ITestWorkspaceUtil {
                 name: 'test-workspace'
             }
         };
+
         return baseDevfile;
     }
 

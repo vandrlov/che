@@ -37,7 +37,7 @@
     "tslint": "5.10.0",
     "typed-rest-client": "^1.2.0",
     "typescript": "^3.4.3",
-    "@eclipse-che/api": "^7.5.0-SNAPSHOT"
+    "@eclipse-che/api": "^7.9.0-SNAPSHOT"
   },
   "dependencies": {
     "inversify": "^5.0.1",

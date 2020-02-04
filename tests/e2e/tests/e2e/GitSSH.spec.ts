@@ -48,7 +48,7 @@ const testWorkspaceUtils: TestWorkspaceUtil = e2eContainer.get<TestWorkspaceUtil
 suite('Git with ssh workflow', async () => {
     const workspacePrefixUrl: string = `${TestConstants.TS_SELENIUM_BASE_URL}/dashboard/#/ide/TestConstants.TS_SELENIUM_USERNAME/`;
     const wsNameCheckGeneratingKeys = 'checkGeneraringSsh';
-    const wsNameCheckPropagatingKeys = 'checPropagatingSsh';
+    const wsNameCheckPropagatingKeys = 'checkPropagatingSsh';
     const committedFile = 'README.md';
 
     suiteSetup(async function () {

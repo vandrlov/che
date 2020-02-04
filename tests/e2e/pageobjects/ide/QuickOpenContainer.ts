@@ -54,6 +54,4 @@ export class QuickOpenContainer {
         await this.clickOnContainerItem(suggestedText);
     }
 
-
-
 }
