@@ -25,7 +25,7 @@ export class GitHubUtil {
     const gitHubContentEntryPointUrl: string = 'https://raw.githubusercontent.com/';
     const pathToRawContent: string = `${gitHubContentEntryPointUrl}${pathToFile}`;
     const authorization: string = 'Authorization';
-    const contentType: string = 'Content-Type'
+    const contentType: string = 'Content-Type';
 
     try {
       delete axios.defaults.headers.common[authorization];

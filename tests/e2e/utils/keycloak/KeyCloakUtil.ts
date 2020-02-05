@@ -13,11 +13,11 @@ export class KeyCloakUtil {
     async getBearerToken(): Promise<string> {
         let keycloakUrl = '';
         try {
-            const cheKeycloakTokenEndpoint = "che.keycloak.token.endpoint";
+            const cheKeycloakTokenEndpoint = 'che.keycloak.token.endpoint';
             const keycloakEndpoint = await axios.get(TestConstants.TS_SELENIUM_BASE_URL + '/api/keycloak/settings');
             keycloakUrl = keycloakEndpoint.data[cheKeycloakTokenEndpoint];
 
-            const cheKeycloakClientId = "che.keycloak.client_id";
+            const cheKeycloakClientId = 'che.keycloak.client_id';
             const keycloakClientId = keycloakEndpoint.data[cheKeycloakClientId];
             const params = {
                 client_id: keycloakClientId,

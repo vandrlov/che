@@ -43,7 +43,7 @@ const CLASSES = {
     GitHubUtil: 'GitHubUtil',
     KeyCloakUtil: 'KeyCloakUtil',
     CheVCSApi: 'CheVCSApi',
-    GitPlugin: 'GitPlugin'
+    GitPlugin: 'GitPlugin',
     NotificationCenter: 'NotificationCenter'
 };
 

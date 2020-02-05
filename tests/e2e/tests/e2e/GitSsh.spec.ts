@@ -86,7 +86,7 @@ suite('Git with ssh workflow', async () => {
         const currentDate: string = Date.now().toString();
         await projectTree.expandPathAndOpenFile('Spoon-Knife', committedFile);
         await editor.type(committedFile, currentDate + '\n', 1);
-        await gitPlugin.openGitHubPluginContainer();
+        await gitPlugin.openGitPluginContainer();
         await gitPlugin.waitChangedFileInChagesList(committedFile);
         await gitPlugin.stageAllChanges(committedFile);
         await gitPlugin.waitChangedFileInChagesList(committedFile);
