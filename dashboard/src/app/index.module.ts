@@ -77,7 +77,7 @@ function keycloakLoad(keycloakSettings: any) {
  <span><p>Probably, one of Che hosts is signed with a self-signed certificate. Possible solutions would be:</p>
  <p>1. Import CA into your browser, you can find instruction how to do it by 
  <a href="${DEFAULT_DOCS_CERTIFICATE}" target="_blank">documentation</a></p>.
- <p>2. Open the <a href="${script.src}" target="_blank">link</a> in a new tab and add an exclusion for this hostand refresh Dashboard.</p></span>`);
+ <p>2. Open the <a href="${script.src}" target="_blank">link</a> in a new tab and add an exclusion for this host and refresh Dashboard.</p></span>`);
     });
     script.addEventListener('abort', () => reject('Script loading aborted.'));
     document.head.appendChild(script);
