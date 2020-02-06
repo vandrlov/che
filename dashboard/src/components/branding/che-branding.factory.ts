@@ -41,6 +41,7 @@ interface IBrandingDocs {
   organization?: string;
   general?: string;
   converting?: string;
+  certificate? : string;
 }
 interface IBrandingWorkspace {
   priorityStacks?: Array<string>;
@@ -61,6 +62,8 @@ interface IBrandingConfiguration {
     resources: string[];
   };
 }
+
+export const DEFAULT_DOCS_CERTIFICATE = '/docs/che-7/setup-che-in-tls-mode-with-self-signed-certificate/';
 
 const ASSET_PREFIX = 'assets/branding/';
 const DEFAULT_PRODUCT_NAME = 'Eclipse Che';
@@ -314,14 +317,15 @@ export class CheBranding {
   /**
    * Returns object with docs URLs.
    */
-  getDocs(): IBrandingDocs {
+  getDocs(): { devfile: string; workspace: string; factory: string; organization: string; general: string, converting: string, certificate: string} {
     return {
       devfile: this.branding.docs && this.branding.docs.devfile ? this.branding.docs.devfile : DEFAULT_DOCS_DEVFILE,
       workspace: this.branding.docs && this.branding.docs.workspace ? this.branding.docs.workspace : DEFAULT_DOCS_WORKSPACE,
       factory: this.branding.docs && this.branding.docs.factory ? this.branding.docs.factory : DEFAULT_DOCS_FACTORY,
       organization: this.branding.docs && this.branding.docs.organization ? this.branding.docs.organization : DEFAULT_DOCS_ORGANIZATION,
       general: this.branding.docs && this.branding.docs.general ? this.branding.docs.general : DEFAULT_DOCS_GENERAL,
-      converting: this.branding.docs && this.branding.docs.converting ? this.branding.docs.converting : DEFAULT_DOCS_CONVERTING
+      converting: this.branding.docs && this.branding.docs.converting ? this.branding.docs.converting : DEFAULT_DOCS_CONVERTING,
+      certificate: this.branding.docs && this.branding.docs.certificate ? this.branding.docs.certificate : DEFAULT_DOCS_CERTIFICATE
     };
   }
 

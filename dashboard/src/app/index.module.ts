@@ -27,7 +27,7 @@ import {WorkspacesConfig} from './workspaces/workspaces-config';
 import {StacksConfig} from './stacks/stacks-config';
 import {GetStartedConfig} from './get-started/get-started-config';
 import {DemoComponentsController} from './demo-components/demo-components.controller';
-import {CheBranding} from '../components/branding/che-branding.factory';
+import {DEFAULT_DOCS_CERTIFICATE, CheBranding} from '../components/branding/che-branding.factory';
 import {ChePreferences} from '../components/api/che-preferences.factory';
 import {RoutingRedirect} from '../components/routing/routing-redirect.factory';
 import {RouteHistory} from '../components/routing/route-history.service';
@@ -72,7 +72,13 @@ function keycloakLoad(keycloakSettings: any) {
     script.async = true;
     script.src = keycloakSettings['che.keycloak.js_adapter_url'];
     script.addEventListener('load', resolve);
-    script.addEventListener('error', () => reject('Error loading script.'));
+    script.addEventListener('error', () => {
+      return reject(`<h3><b>Unknown Error</b></h3>
+ <span><p>Probably, one of Che hosts is signed with a self-signed certificate. Possible solutions would be:</p>
+ <p>1. Import CA into your browser, you can find instruction how to do it by 
+ <a href="${DEFAULT_DOCS_CERTIFICATE}" target="_blank">documentation</a></p>
+ <p>2. Open the <a href="${script.src}" target="_blank">link</a> in a new tab and add an exclusion for this hostand refresh Dashboard.</p></span>`);
+    });
     script.addEventListener('abort', () => reject('Script loading aborted.'));
     document.head.appendChild(script);
   });
@@ -148,21 +154,27 @@ angular.element(document).ready(() => {
   const promise = new Promise((resolve: IResolveFn<any>, reject: IRejectFn<any>) => {
     angular.element.get('/api/keycloak/settings').then(resolve, reject);
   });
+  let hasLoadError = false;
   promise.then((keycloakSettings: any) => {
     keycloakAuth.config = buildKeycloakConfig(keycloakSettings);
 
     // load Keycloak
     return keycloakLoad(keycloakSettings).then(() => {
       // init Keycloak
-      let theUseNonce: boolean;
+      let theUseNonce = false;
       if (typeof keycloakSettings['che.keycloak.use_nonce'] === 'string') {
         theUseNonce = keycloakSettings['che.keycloak.use_nonce'].toLowerCase() === 'true';
       }
-      let initOptions = {
+      const initOptions = {
         useNonce: theUseNonce,
         redirectUrl: keycloakSettings['che.keycloak.redirect_url.dashboard']
       };
       return keycloakInit(keycloakAuth.config, initOptions);
+    }).catch((error: any) => {
+      if(keycloakSettings['che.keycloak.js_adapter_url']){
+        hasLoadError = true;
+      }
+      return Promise.reject(error);
     }).then((keycloak: any) => {
       keycloakAuth.isPresent = true;
       keycloakAuth.keycloak = keycloak;
@@ -171,6 +183,9 @@ angular.element(document).ready(() => {
       /* tslint:enable */
     });
   }).catch((error: any) => {
+    if (hasLoadError) {
+      return Promise.reject(error);
+    }
     console.error('Keycloak initialization failed with error: ', error);
   }).then(() => {
     const keycloak = (window as any)._keycloak;
