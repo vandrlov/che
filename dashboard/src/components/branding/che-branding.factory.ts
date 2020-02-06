@@ -317,7 +317,7 @@ export class CheBranding {
   /**
    * Returns object with docs URLs.
    */
-  getDocs(): { devfile: string; workspace: string; factory: string; organization: string; general: string, converting: string, certificate: string} {
+  getDocs(): IBrandingDocs {
     return {
       devfile: this.branding.docs && this.branding.docs.devfile ? this.branding.docs.devfile : DEFAULT_DOCS_DEVFILE,
       workspace: this.branding.docs && this.branding.docs.workspace ? this.branding.docs.workspace : DEFAULT_DOCS_WORKSPACE,
