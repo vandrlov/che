@@ -40,7 +40,7 @@ seleniumTestsSetup
 
 #bash tests/legacy-e2e/che-selenium-test/selenium-tests.sh --threads=1 --host=${CHE_ROUTE} --port=80 --multiuser --test=CreateAndDeleteProjectsTest
 #bash tests/legacy-e2e/che-selenium-test/selenium-tests.sh --threads=4 --host=${CHE_ROUTE} --port=80 --multiuser --test=org.eclipse.che.selenium.dashboard.**
-bash tests/legacy-e2e/che-selenium-test/selenium-tests.sh --threads=3 --host=${CHE_ROUTE} --port=80 --multiuser
+bash tests/legacy-e2e/che-selenium-test/selenium-tests.sh --threads=4 --host=${CHE_ROUTE} --port=80 --multiuser
 
 saveSeleniumTestResult
 getOpenshiftLogs

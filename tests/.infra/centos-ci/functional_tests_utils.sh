@@ -397,7 +397,8 @@ function getReleaseVersion() {
 function setupReleaseVersionAndTag() {
   echo "****** Starting RH-Che RC check $(date) ******"
   RELEASE_VERSION=$(getReleaseVersion)
-  RELEASE_TAG="rc"
+  #RELEASE_TAG="rc" # Switch on back after debug
+  RELEASE_TAG=$(getReleaseVersion)
 
   echo "Release version:" ${RELEASE_VERSION}
   echo "Release tag:" ${RELEASE_TAG}
