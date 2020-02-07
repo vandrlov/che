@@ -37,4 +37,5 @@ deployCheIntoCluster  --che-operator-cr-yaml=/tmp/custom-resource.yaml
 
 createTestUserAndObtainUserToken
 createTestWorkspaceAndRunTest  --devfile=https://raw.githubusercontent.com/eclipse/che/cico-rc-test/tests/e2e/files/happy-path/happy-path-workspace.yaml
+getOpenshiftLogs
 archiveArtifacts "rc-multiuser-happy-path-test"
