@@ -11,11 +11,11 @@
  */
 'use strict';
 
-import { CheBranding } from '../../../../../../../components/branding/che-branding.factory';
-import { ImportGithubProjectService, LoadingState } from './import-github-project.service';
-import { ProjectSource } from '../../project-source.enum';
-import { IGithubRepository } from './github-repository-interface';
-import { AddImportProjectService } from '../add-import-project.service';
+import {CheBranding} from '../../../../../../../components/branding/branding.service';
+import {ImportGithubProjectService, LoadingState} from './import-github-project.service';
+import {ProjectSource} from '../../project-source.enum';
+import {IGithubRepository} from './github-repository-interface';
+import {AddImportProjectService} from '../add-import-project.service';
 
 /**
  * This class is handling the controller for the GitHub part
@@ -122,9 +122,9 @@ export class ImportGithubProjectController {
    * Default constructor that is using resource
    */
   constructor($q: ng.IQService, $mdDialog: ng.material.IDialogService, $location: ng.ILocationService,
-    $browser: any, $scope: ng.IScope, githubPopup: any, cheBranding: CheBranding,
-    githubOrganizationNameResolver: any, importGithubProjectService: ImportGithubProjectService,
-    cheListHelperFactory: che.widget.ICheListHelperFactory, addImportProjectService: AddImportProjectService, keycloakAuth: any) {
+              $browser: any, $scope: ng.IScope, githubPopup: any, cheBranding: CheBranding,
+              githubOrganizationNameResolver: any, importGithubProjectService: ImportGithubProjectService,
+              cheListHelperFactory: che.widget.ICheListHelperFactory, addImportProjectService: AddImportProjectService, keycloakAuth: any) {
     this.$q = $q;
     this.$mdDialog = $mdDialog;
     this.$location = $location;
@@ -146,7 +146,7 @@ export class ImportGithubProjectController {
       cheListHelperFactory.removeHelper(helperId);
     });
 
-    this.repositoryFilter = { name: '' };
+    this.repositoryFilter = {name: ''};
     this.organizationFilter = {
       owner: {
         login: ''

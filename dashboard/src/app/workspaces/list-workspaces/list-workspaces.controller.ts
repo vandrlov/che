@@ -15,7 +15,7 @@ import {CheNotification} from '../../../components/notification/che-notification
 import {CheWorkspace} from '../../../components/api/workspace/che-workspace.factory';
 import {CheNamespaceRegistry} from '../../../components/api/namespace/che-namespace-registry.factory';
 import {ConfirmDialogService} from '../../../components/service/confirm-dialog/confirm-dialog.service';
-import {CheBranding} from '../../../components/branding/che-branding.factory';
+import {CheBranding} from '../../../components/branding/branding.service';
 
 /**
  * @ngdoc controller
@@ -26,7 +26,7 @@ import {CheBranding} from '../../../components/branding/che-branding.factory';
 export class ListWorkspacesCtrl {
 
   static $inject = ['$log', '$mdDialog', '$q', 'lodash', 'cheAPI', 'cheNotification', 'cheBranding', 'cheWorkspace', 'cheNamespaceRegistry',
-   'confirmDialogService', '$scope', 'cheListHelperFactory'];
+    'confirmDialogService', '$scope', 'cheListHelperFactory'];
 
   $q: ng.IQService;
   $log: ng.ILogService;
@@ -46,7 +46,7 @@ export class ListWorkspacesCtrl {
   workspaceUsedResources: Map<string, string>;
 
   isExactMatch: boolean = false;
-  namespaceFilter: {namespace: string};
+  namespaceFilter: { namespace: string };
   namespaceLabels: string[];
   onFilterChanged: Function;
   onSearchChanged: Function;
@@ -102,7 +102,7 @@ export class ListWorkspacesCtrl {
     };
 
     // callback when namespace is changed
-    this.onFilterChanged = (label :  string) => {
+    this.onFilterChanged = (label: string) => {
       if (label === this.ALL_NAMESPACES) {
         this.namespaceFilter.namespace = '';
       } else {
@@ -140,7 +140,7 @@ export class ListWorkspacesCtrl {
       return this.$q.reject(error);
     }).then(() => {
       this.cheListHelper.setList(this.userWorkspaces, 'id');
-    }).finally(()=> {
+    }).finally(() => {
       this.isInfoLoading = false;
     });
   }
@@ -229,7 +229,7 @@ export class ListWorkspacesCtrl {
       content += 'this selected workspace?';
     }
 
-    return this.confirmDialogService.showConfirmDialog('Remove workspaces', content, { resolve: 'Delete' });
+    return this.confirmDialogService.showConfirmDialog('Remove workspaces', content, {resolve: 'Delete'});
   }
 
   /**

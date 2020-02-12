@@ -11,7 +11,7 @@
  */
 'use strict';
 import {CheWorkspace, WorkspaceStatus} from '../../../../components/api/workspace/che-workspace.factory';
-import {CheBranding} from '../../../../components/branding/che-branding.factory';
+import {CheBranding} from '../../../../components/branding/branding.service';
 import {WorkspacesService} from '../../workspaces.service';
 import {WorkspaceDataManager} from '../../../../components/api/workspace/workspace-data-manager';
 
@@ -176,7 +176,7 @@ export class WorkspaceItemCtrl {
   }
 
   isCheckboxEnable(): boolean {
-    const status =  WorkspaceStatus[this.getWorkspaceStatus()];
+    const status = WorkspaceStatus[this.getWorkspaceStatus()];
     return status === WorkspaceStatus.RUNNING || status === WorkspaceStatus.STOPPED;
   }
 }

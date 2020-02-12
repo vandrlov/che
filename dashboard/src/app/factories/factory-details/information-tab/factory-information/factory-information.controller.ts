@@ -13,7 +13,7 @@
 import {CheAPI} from '../../../../../components/api/che-api.factory';
 import {CheNotification} from '../../../../../components/notification/che-notification.factory';
 import {ConfirmDialogService} from '../../../../../components/service/confirm-dialog/confirm-dialog.service';
-import {CheBranding} from '../../../../../components/branding/che-branding.factory';
+import {CheBranding} from '../../../../../components/branding/branding.service';
 
 /**
  * Controller for a factory information.
@@ -218,7 +218,7 @@ export class FactoryInformationController {
 
     const title = 'Warning',
       content = `You have unsaved changes in JSON configuration. Would you like to save changes now?`;
-    return this.confirmDialogService.showConfirmDialog(title, content, { resolve: 'Continue' }).then(() => {
+    return this.confirmDialogService.showConfirmDialog(title, content, {resolve: 'Continue'}).then(() => {
       this.updateFactoryContent();
     });
   }
@@ -296,7 +296,7 @@ export class FactoryInformationController {
    */
   deleteFactory(): void {
     let content = 'Please confirm removal for the factory \'' + (this.factory.name ? this.factory.name : this.factory.id) + '\'.';
-    let promise = this.confirmDialogService.showConfirmDialog('Remove the factory', content, { resolve: 'Delete' });
+    let promise = this.confirmDialogService.showConfirmDialog('Remove the factory', content, {resolve: 'Delete'});
 
     promise.then(() => {
       // remove it !

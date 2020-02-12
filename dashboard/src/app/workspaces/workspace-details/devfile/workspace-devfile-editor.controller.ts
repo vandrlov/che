@@ -11,8 +11,8 @@
  */
 'use strict';
 
-import {CheBranding} from '../../../../components/branding/che-branding.factory';
-import { CheAPI } from '../../../../components/api/che-api.factory';
+import {CheBranding} from '../../../../components/branding/branding.service';
+import {CheAPI} from '../../../../components/api/che-api.factory';
 
 /**
  * @ngdoc controller
@@ -154,7 +154,7 @@ export class WorkspaceDevfileEditorController {
         return;
       }
 
-      const devfile =  jsyaml.safeLoad(this.devfileYaml);
+      const devfile = jsyaml.safeLoad(this.devfileYaml);
       Object.keys(this.workspaceDevfile).forEach((key: string) => {
         if (!devfile[key]) {
           delete this.workspaceDevfile[key];

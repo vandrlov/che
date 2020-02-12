@@ -10,12 +10,12 @@
  *   Red Hat, Inc. - initial API and implementation
  */
 'use strict';
-import { CheWorkspace } from '../../../components/api/workspace/che-workspace.factory';
+import {CheWorkspace} from '../../../components/api/workspace/che-workspace.factory';
 import IdeSvc from '../../../app/ide/ide.service';
-import { CheBranding } from '../../../components/branding/che-branding.factory';
-import { WorkspacesService } from '../../workspaces/workspaces.service';
-import { CheNotification } from '../../../components/notification/che-notification.factory';
-import { WorkspaceDetailsService } from '../../workspaces/workspace-details/workspace-details.service';
+import {CheBranding} from '../../../components/branding/branding.service';
+import {WorkspacesService} from '../../workspaces/workspaces.service';
+import {CheNotification} from '../../../components/notification/che-notification.factory';
+import {WorkspaceDetailsService} from '../../workspaces/workspace-details/workspace-details.service';
 
 
 const MAX_RECENT_WORKSPACES_ITEMS: number = 5;

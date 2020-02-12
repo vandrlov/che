@@ -11,7 +11,7 @@
  */
 'use strict';
 
-import { CheBranding } from '../../branding/che-branding.factory';
+import {CheBranding} from '../../branding/branding.service';
 
 const IDE_FETCHER_CALLBACK_ID = 'cheIdeFetcherCallback';
 
@@ -65,7 +65,7 @@ export class ResourceFetcherService {
       chunk: string;
       cdn: string;
     };
-    this.$http.get(url, { cache: false }).then((response: ng.IHttpResponse<Array<resourceEntry>>) => {
+    this.$http.get(url, {cache: false}).then((response: ng.IHttpResponse<Array<resourceEntry>>) => {
       if (!response || !response.data) {
         return;
       }

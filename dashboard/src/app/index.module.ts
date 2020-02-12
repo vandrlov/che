@@ -27,7 +27,6 @@ import {WorkspacesConfig} from './workspaces/workspaces-config';
 import {StacksConfig} from './stacks/stacks-config';
 import {GetStartedConfig} from './get-started/get-started-config';
 import {DemoComponentsController} from './demo-components/demo-components.controller';
-import {DEFAULT_DOCS_CERTIFICATE, CheBranding} from '../components/branding/che-branding.factory';
 import {ChePreferences} from '../components/api/che-preferences.factory';
 import {RoutingRedirect} from '../components/routing/routing-redirect.factory';
 import {RouteHistory} from '../components/routing/route-history.service';
@@ -36,15 +35,20 @@ import {OrganizationsConfig} from './organizations/organizations-config';
 import {TeamsConfig} from './teams/teams-config';
 import {ProfileConfig} from './profile/profile-config';
 import {ResourceFetcherService} from '../components/service/resource-fetcher/resource-fetcher.service';
+import {CheBranding} from '../components/branding/branding.service';
 
 // init module
 const initModule = angular.module('userDashboard', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ngRoute',
   'angular-websocket', 'ui.bootstrap', 'ngMaterial', 'ngMessages', 'angularMoment', 'angular.filter',
   'ngLodash', 'uuid4', 'angularFileUpload', 'ui.gravatar']);
 
+const branding = CheBranding.get();
+initModule.constant('cheBranding', branding);
+
 window.name = 'NG_DEFER_BOOTSTRAP!';
 
 declare const Keycloak: Function;
+
 function buildKeycloakConfig(keycloakSettings: any): any {
   const theOidcProvider = keycloakSettings['che.keycloak.oidc_provider'];
   if (!theOidcProvider) {
@@ -60,12 +64,15 @@ function buildKeycloakConfig(keycloakSettings: any): any {
     };
   }
 }
+
 interface IResolveFn<T> {
   (value?: T | PromiseLike<T>): void;
 }
+
 interface IRejectFn<T> {
   (reason?: any): void;
 }
+
 function keycloakLoad(keycloakSettings: any) {
   return new Promise((resolve: IResolveFn<any>, reject: IRejectFn<any>) => {
     const script = document.createElement('script');
@@ -73,11 +80,14 @@ function keycloakLoad(keycloakSettings: any) {
     script.src = keycloakSettings['che.keycloak.js_adapter_url'];
     script.addEventListener('load', resolve);
     script.addEventListener('error', () => {
-      return reject(`<h3><b>Unknown Error</b></h3>
- <span><p>Probably, one of Che hosts is signed with a self-signed certificate. Possible solutions would be:</p>
- <p>1. Import CA into your browser, you can find instruction how to do it by 
- <a href="${DEFAULT_DOCS_CERTIFICATE}" target="_blank">documentation</a>.</p>
- <p>2. Open the <a href="${script.src}" target="_blank">link</a> in a new tab and add an exclusion for this host and refresh Dashboard.</p></span>`);
+      return branding.ready.then(() => {
+        reject(`<h3>Certificate Error</h3><div class="certificate-error">
+ <p>Your Che host may be signed with a self-signed certificate. To resolve this issue, try these possible solutions:</p>
+ <p>1.) Import CA info into your browser. You can find instructions on how to do this in you 
+ <a href="${branding.getDocs().certificate}" target="_blank">Che documentation</a>.</p>
+ <p>2.) Open <a href="${script.src}" target="_blank">the link for your Che host</a> in a new tab and add an exclusion.</p>
+<br/>After trying each of these solutions, <a href="/">refresh your Dashboard</a> to see if the problem has been resolved.</div>`);
+      });
     });
     script.addEventListener('abort', () => reject('Script loading aborted.'));
     document.head.appendChild(script);
@@ -137,9 +147,9 @@ function getApis(keycloak: any): Promise<void> {
   });
 }
 function showErrorMessage(errorMessage: string) {
-  const div = document.createElement('p');
-  div.className = 'authorization-error';
-  div.innerHTML = errorMessage + '<br/>Click <a href="/">here</a> to reload page.';
+  const div = document.createElement('div');
+  div.className = 'keycloak-error';
+  div.innerHTML = errorMessage;
   document.querySelector('.main-page-loader').appendChild(div);
 }
 
@@ -154,7 +164,7 @@ angular.element(document).ready(() => {
   const promise = new Promise((resolve: IResolveFn<any>, reject: IRejectFn<any>) => {
     angular.element.get('/api/keycloak/settings').then(resolve, reject);
   });
-  let hasLoadError = false;
+  let hasCertificateError = false;
   promise.then((keycloakSettings: any) => {
     keycloakAuth.config = buildKeycloakConfig(keycloakSettings);
 
@@ -171,8 +181,8 @@ angular.element(document).ready(() => {
       };
       return keycloakInit(keycloakAuth.config, initOptions);
     }).catch((error: any) => {
-      if(keycloakSettings['che.keycloak.js_adapter_url']){
-        hasLoadError = true;
+      if (keycloakSettings['che.keycloak.js_adapter_url']) {
+        hasCertificateError = true;
       }
       return Promise.reject(error);
     }).then((keycloak: any) => {
@@ -183,7 +193,7 @@ angular.element(document).ready(() => {
       /* tslint:enable */
     });
   }).catch((error: any) => {
-    if (hasLoadError) {
+    if (hasCertificateError) {
       return Promise.reject(error);
     }
     console.error('Keycloak initialization failed with error: ', error);
@@ -196,6 +206,9 @@ angular.element(document).ready(() => {
     (angular as any).resumeBootstrap();
   }).catch((error: string) => {
     console.error(`Can't GET "/api". ${error ? 'Error: ' : ''}`, error);
+    if (!hasCertificateError) {
+      error = `${error}<br/>Click <a href="/">here</a> to reload page.`
+    }
     showErrorMessage(error);
   });
 });
@@ -210,7 +223,7 @@ initModule.config(['$routeProvider', ($routeProvider: che.route.IRouteProvider) 
     if (angular.isUndefined(route.resolve)) {
       route.resolve = {};
     }
-    (route.resolve as any).app = ['cheBranding', '$q', 'chePreferences', (cheBranding: CheBranding, $q: ng.IQService, chePreferences: ChePreferences) => {
+    (route.resolve as any).app = ['$q', 'chePreferences', ($q: ng.IQService, chePreferences: ChePreferences) => {
       const deferred = $q.defer();
       if (chePreferences.getPreferences()) {
         deferred.resolve();
@@ -250,7 +263,7 @@ initModule.config(['$routeProvider', ($routeProvider: che.route.IRouteProvider) 
 
 }]);
 
-const DEV = false;
+const DEV = true;
 
 // configs
 initModule.config(['$routeProvider', ($routeProvider: che.route.IRouteProvider) => {
@@ -295,7 +308,9 @@ initModule.run([
     routeHistory: RouteHistory,
     routingRedirect: RoutingRedirect,
   ) => {
-
+    branding.ready.then(() => {
+      ($rootScope as any).branding = branding.all;
+    });
     $rootScope.hideLoader = false;
     $rootScope.waitingLoaded = false;
     $rootScope.showIDE = false;

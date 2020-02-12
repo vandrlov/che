@@ -15,10 +15,10 @@ import {CheNotification} from '../../../components/notification/che-notification
 import {WorkspaceDetailsService} from './workspace-details.service';
 import {WorkspacesService} from '../workspaces.service';
 import {ICheEditModeOverlayConfig} from '../../../components/widget/edit-mode-overlay/che-edit-mode-overlay.directive';
-import {CheBranding} from '../../../components/branding/che-branding.factory';
+import {CheBranding} from '../../../components/branding/branding.service';
 import {WorkspaceDataManager} from '../../../components/api/workspace/workspace-data-manager';
 
-export  interface IInitData {
+export interface IInitData {
   namespaceId: string;
   workspaceName: string;
   workspaceDetails: che.IWorkspace;
@@ -390,7 +390,7 @@ export class WorkspaceDetailsController {
   }
 
   onWorkspaceChanged(): void {
-    let { isModified, needRestart } = this.isModifiedDevfile();
+    let {isModified, needRestart} = this.isModifiedDevfile();
 
     if (this.getWorkspaceStatus() === WorkspaceStatus[WorkspaceStatus.STARTING]
       || this.getWorkspaceStatus() === WorkspaceStatus[WorkspaceStatus.RUNNING]) {
@@ -400,7 +400,7 @@ export class WorkspaceDetailsController {
     }
 
     if (isModified || needRestart) {
-      this.workspaceDetailsService.setModified(this.workspaceId, { isSaved: isModified === false, needRestart });
+      this.workspaceDetailsService.setModified(this.workspaceId, {isSaved: isModified === false, needRestart});
     } else {
       this.workspaceDetailsService.removeModified(this.workspaceId);
     }
@@ -422,23 +422,23 @@ export class WorkspaceDetailsController {
     this.editOverlayConfig.disabled = true;
 
     this.loading = true;
-    this.$scope.$broadcast('edit-workspace-details', { status: 'saving' });
+    this.$scope.$broadcast('edit-workspace-details', {status: 'saving'});
 
     this.workspaceDetailsService.applyChanges(this.workspaceDetails)
       .then(() => {
         this.workspaceDetailsService.removeModified(this.workspaceId);
         this.cheNotification.showInfo('Workspace updated.');
-        this.$scope.$broadcast('edit-workspace-details', { status: 'saved' });
+        this.$scope.$broadcast('edit-workspace-details', {status: 'saved'});
       })
       .catch((error: any) => {
-        this.$scope.$broadcast('edit-workspace-details', { status: 'failed' });
+        this.$scope.$broadcast('edit-workspace-details', {status: 'failed'});
         this.cheNotification.showError('Update workspace failed.', error);
       })
       .then(() => {
         return this.cheWorkspace.fetchWorkspaceDetails(this.initialWorkspaceDetails.id);
       })
       .then(() => {
-        this.$location.path('/workspace/' + this.namespaceId + '/' + this.workspaceDataManager.getName(this.workspaceDetails)).search({ tab: this.tab[this.selectedTabIndex] });
+        this.$location.path('/workspace/' + this.namespaceId + '/' + this.workspaceDataManager.getName(this.workspaceDetails)).search({tab: this.tab[this.selectedTabIndex]});
       })
       .finally(() => {
         this.loading = false;
@@ -457,20 +457,20 @@ export class WorkspaceDetailsController {
     this.editOverlayConfig.disabled = true;
 
     this.loading = true;
-    this.$scope.$broadcast('edit-workspace-details', { status: 'saving' });
+    this.$scope.$broadcast('edit-workspace-details', {status: 'saving'});
 
     this.workspaceDetailsService.saveChanges(this.workspaceDetails)
       .then(() => {
-        this.workspaceDetailsService.setModified(this.workspaceId, { isSaved: true });
+        this.workspaceDetailsService.setModified(this.workspaceId, {isSaved: true});
 
         let message = 'Workspace updated.';
         message += notifyRestart ? '<br/>To apply changes in running workspace - need to restart it.' : '';
         this.cheNotification.showInfo(message);
 
-        this.$scope.$broadcast('edit-workspace-details', { status: 'saved' });
+        this.$scope.$broadcast('edit-workspace-details', {status: 'saved'});
       })
       .catch((error: any) => {
-        this.$scope.$broadcast('edit-workspace-details', { status: 'failed' });
+        this.$scope.$broadcast('edit-workspace-details', {status: 'failed'});
         const errorMessage = 'Cannot retrieve workspace configuration.';
         this.cheNotification.showError(error && error.data && error.data.message ? error.data.message : errorMessage);
       })
@@ -487,7 +487,7 @@ export class WorkspaceDetailsController {
     this.workspaceDetailsService.removeModified(this.workspaceId);
     this.workspaceDetails = angular.copy(this.initialWorkspaceDetails);
     this.onWorkspaceChanged();
-    this.$scope.$broadcast('edit-workspace-details', { status: 'cancelled' });
+    this.$scope.$broadcast('edit-workspace-details', {status: 'cancelled'});
   }
 
   runWorkspace(): ng.IPromise<void> {
@@ -538,7 +538,7 @@ export class WorkspaceDetailsController {
       };
     }
 
-    const tmpDevfile = angular.extend({}, this.initialWorkspaceDetails.devfile, { metadata: { name: this.workspaceDetails.devfile.metadata.name } });
+    const tmpDevfile = angular.extend({}, this.initialWorkspaceDetails.devfile, {metadata: {name: this.workspaceDetails.devfile.metadata.name}});
     const needRestart = false === angular.equals(tmpDevfile, this.workspaceDetails.devfile);
     return {
       isModified: true,

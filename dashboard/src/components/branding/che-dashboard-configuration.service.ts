@@ -11,7 +11,8 @@
  */
 'use strict';
 
-import { CheBranding } from './che-branding.factory';
+import {CheBranding} from './branding.service';
+import {CheService} from '../api/che-service.factory';
 
 /**
  * This class handles configuration data of Dashboard.
@@ -22,6 +23,8 @@ export class CheDashboardConfigurationService {
   static $inject = [
     '$q',
     'cheBranding',
+    'cheService',
+    '$rootScope'
   ];
 
   $q: ng.IQService;
@@ -30,9 +33,18 @@ export class CheDashboardConfigurationService {
   constructor(
     $q: ng.IQService,
     cheBranding: CheBranding,
+    cheService: CheService,
+    $rootScope: ng.IRootScopeService
   ) {
     this.$q = $q;
     this.cheBranding = cheBranding;
+
+    cheBranding.ready.then(() => {
+      cheService.fetchServicesInfo().then(() => {
+        const info = cheService.getServicesInfo();
+        ($rootScope as any).productVersion = (info && info.buildInfo) ? info.buildInfo : '';
+      });
+    });
   }
 
   allowedMenuItem(menuItem: che.ConfigurableMenuItem | string): boolean {
@@ -41,10 +53,12 @@ export class CheDashboardConfigurationService {
   }
 
   allowRoutes(menuItem: che.ConfigurableMenuItem): ng.IPromise<void> {
-    return this.cheBranding.ready.then(() => {
-      if (this.allowedMenuItem(menuItem) === false) {
-        return this.$q.reject();
-      }
+    return this.$q.resolve().then(() => {
+      this.cheBranding.ready.then(() => {
+        if (this.allowedMenuItem(menuItem) === false) {
+          return this.$q.reject();
+        }
+      });
     });
   }
 

@@ -14,7 +14,7 @@
 import {CheJsonRpcMasterApi} from '../json-rpc/che-json-rpc-master-api';
 import {CheJsonRpcApi} from '../json-rpc/che-json-rpc-api.factory';
 import {IObservableCallbackFn, Observable} from '../../utils/observable';
-import {CheBranding} from '../../branding/che-branding.factory';
+import {CheBranding} from '../../branding/branding.service';
 import {CheNotification} from '../../notification/che-notification.factory';
 import {WorkspaceDataManager} from './workspace-data-manager';
 
@@ -417,7 +417,10 @@ export class CheWorkspace {
       return this.workspacePromises.get(workspacePromisesKey);
     }
 
-    const promise = envName ? this.remoteWorkspaceAPI.startWorkspace({workspaceId: workspaceId, envName: envName}, {}).$promise : this.remoteWorkspaceAPI.startWorkspaceWithNoEnvironment({workspaceId: workspaceId}, {}).$promise;
+    const promise = envName ? this.remoteWorkspaceAPI.startWorkspace({
+      workspaceId: workspaceId,
+      envName: envName
+    }, {}).$promise : this.remoteWorkspaceAPI.startWorkspaceWithNoEnvironment({workspaceId: workspaceId}, {}).$promise;
     this.workspacePromises.set(workspacePromisesKey, promise);
     promise.finally(() => {
       this.workspacePromises.delete(workspacePromisesKey);
@@ -613,6 +616,7 @@ export class CheWorkspace {
       return this.$q.reject(error);
     });
   }
+
   /**
    * Returns the system settings for workspaces.
    *
@@ -679,7 +683,7 @@ export class CheWorkspace {
     let url = '/workspace-loader/';
 
     let promise = this.$http.get(url);
-    promise.then((response: {data: any}) => {
+    promise.then((response: { data: any }) => {
       this.workspaceLoaderUrl = devmode ? proxySettings + url : url;
     }, (error: any) => {
       if (error.status !== 304) {

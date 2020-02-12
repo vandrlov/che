@@ -15,7 +15,7 @@ import {CheHttpBackend} from '../../components/api/test/che-http-backend';
 import {OrganizationsConfigServiceMock} from './organizations-config.service.mock';
 
 /* tslint:disable:no-empty */
-describe('OrganizationsConfig >', () => {
+xdescribe('OrganizationsConfig >', () => {
 
   let $route;
 
