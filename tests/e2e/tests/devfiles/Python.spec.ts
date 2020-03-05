@@ -1,3 +1,12 @@
+/*********************************************************************
+ * Copyright (c) 2020 Red Hat, Inc.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ **********************************************************************/
 import { NameGenerator } from '../../utils/NameGenerator';
 import 'reflect-metadata';
 import * as projectAndFileTests from '../../testsLibrary/ProjectAndFileTests';
@@ -30,7 +39,6 @@ suite(`${workspaceStack} test`, async () => {
         commonLsTests.autocomplete(tabTitle, 9, 2, 'print');
         commonLsTests.errorHighlighting(tabTitle, 'print msg ', 9);
     });
-
     
     suite ('Stop and remove workspace', async() => {
         workspaceHandling.stopWorkspace(workspaceName);
